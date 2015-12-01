@@ -59,7 +59,7 @@ public class Main
 	{
         try
 	{
-	OutputStream output = new FileOutputStream("/home/mbax2vh2/Kalaha/KalahaLog.log");
+	OutputStream output = new FileOutputStream("/home/mbax2vh2/Kalaha/log.txt");
 	PrintStream printOut = new PrintStream(output);
 	System.setErr(printOut);
 	String s;
