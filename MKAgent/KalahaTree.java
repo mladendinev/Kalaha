@@ -1,20 +1,17 @@
 package MKAgent;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by mbax2vh2 on 01/12/15.
  */
 public class KalahaTree {
 
-    private KalahaState root;
+    private KalahaNode root;
 
-    public KalahaTree(KalahaState root) {
+    public KalahaTree(KalahaNode root) {
         this.root = root;
     }
 
-    public KalahaState getRoot() {
+    public KalahaNode getRoot() {
         return root;
     }
 

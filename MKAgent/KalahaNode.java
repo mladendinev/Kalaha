@@ -6,9 +6,9 @@ import java.util.List;
 /**
  * Created by mbax2vh2 on 01/12/15.
  */
-public class KalahaState {
+public class KalahaNode {
 
-    private List<KalahaState> children;
+    private List<KalahaNode> children;
 
     //TODO do we need to store the whole board??
     private final Kalah currentKalah;
@@ -25,7 +25,7 @@ public class KalahaState {
 
     private Side side;
 
-    public KalahaState(Kalah currentKalah, Side side) {
+    public KalahaNode(Kalah currentKalah, Side side) {
         this.currentKalah = currentKalah;
         evaluationFunction = 0;
         isLeafNode = false;
@@ -35,7 +35,7 @@ public class KalahaState {
 
     }
 
-    public KalahaState(Kalah currentKalah, Side side, boolean isLeafNode) {
+    public KalahaNode(Kalah currentKalah, Side side, boolean isLeafNode) {
         this.currentKalah = currentKalah;
         this.isLeafNode = isLeafNode;
         evaluationFunction = 0;
@@ -74,7 +74,7 @@ public class KalahaState {
         return isLeafNode;
     }
 
-    public List<KalahaState> getChildren() {
+    public List<KalahaNode> getChildren() {
         return children;
     }
 
@@ -83,7 +83,7 @@ public class KalahaState {
         for(int i = 0; i < 7; i++){
             Board currentBoard = currentKalah.getBoard();
             Kalah childKalah = new Kalah(new Board(currentBoard));
-            KalahaState child = new KalahaState(childKalah, side.opposite());
+            KalahaNode child = new KalahaNode(childKalah, side.opposite());
             Move move = new Move(side, i + 1);
             childKalah.makeMove(move);
             children.add(child);

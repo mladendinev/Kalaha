@@ -93,7 +93,7 @@ public class Main
 							else {
 								side = Side.NORTH;
 							}
-							KalahaState root = new KalahaState(kalahGame, side);
+							KalahaNode root = new KalahaNode(kalahGame, side);
 							tree = new KalahaTree(root);
 							root.addChildren();
 							sendMsg("MOVE;1");
