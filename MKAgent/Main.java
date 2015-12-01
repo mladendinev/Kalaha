@@ -57,50 +57,65 @@ public class Main
 	 */
 	public static void main(String[] args)
 	{
-        try
-	{
-	String filePath = System.getProperty("user.dir");
-	filePath += "/KalahaLog.log";
-	OutputStream output = new FileOutputStream(filePath);
+        try {
+			String filePath = System.getProperty("user.dir");
+			filePath += "/KalahaLog.log";
+			OutputStream output = new FileOutputStream(filePath);
 
-	PrintStream printOut = new PrintStream(output);
-	System.setErr(printOut);
-		System.err.println(filePath);
-	String s;
-	while (true)
-	{
-		System.err.println();
-		s = recvMsg();
-		System.err.print("Received: " + s);
-		System.err.flush();
-		try {
-			MsgType mt = Protocol.getMessageType(s);
-			switch (mt)
+			PrintStream printOut = new PrintStream(output);
+			System.setErr(printOut);
+			System.err.println(filePath);
+
+
+			KalahaTree tree;
+			Board b = new Board(7,7);
+			Kalah kalahGame = new Kalah(b);
+
+			String s;
+			while (true)
 			{
-				case START: System.err.println("A start.");
-					boolean first = Protocol.interpretStartMsg(s);
-					System.err.println("Starting player? " + first);
-					sendMsg("MOVE;1");
-					break;
-				case STATE: System.err.println("A state.");
-					Board b = new Board(6,6);
-					Protocol.MoveTurn r = Protocol.interpretStateMsg (s, b);
-					System.err.println("This was the move: " + r.move);
-					System.err.println("Is the game over? " + r.end);
-					if (!r.end) System.err.println("Is it our turn again? " + r.again);
-					System.err.print("The board:\n" + b);
-					break;
-				case END: System.err.println("An end. Bye bye!"); return;
+				System.err.println();
+				s = recvMsg();
+				System.err.print("Received: " + s);
+				System.err.flush();
+				try {
+					MsgType mt = Protocol.getMessageType(s);
+					switch (mt)
+					{
+						case START: System.err.println("A start.");
+							boolean first = Protocol.interpretStartMsg(s);
+							System.err.println("Starting player? " + first);
+
+							Side side;
+							if (first) {
+								side = Side.SOUTH;
+							}
+							else {
+								side = Side.NORTH;
+							}
+							KalahaState root = new KalahaState(kalahGame, side);
+							tree = new KalahaTree(root);
+							root.addChildren();
+							sendMsg("MOVE;1");
+							break;
+						case STATE: System.err.println("A state.");
+							Protocol.MoveTurn r = Protocol.interpretStateMsg (s, b);
+							System.err.println("This was the move: " + r.move);
+							System.err.println("Is the game over? " + r.end);
+							if (!r.end) System.err.println("Is it our turn again? " + r.again);
+							System.err.print("The board:\n" + b);
+							break;
+						case END: System.err.println("An end. Bye bye!"); return;
+					}
+
+				} catch (InvalidMessageException e) {
+					System.err.println(e.getMessage());
+				}
 			}
-		
-		} catch (InvalidMessageException e) {
-			System.err.println(e.getMessage());
 		}
-	}
-	}
-	catch (IOException e)
-	{
-		System.err.println("This shouldn't happen: " + e.getMessage());
-	}
+		catch (IOException e)
+		{
+			System.err.println("This shouldn't happen: " + e.getMessage());
+		}
 	}
 }
