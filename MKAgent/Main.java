@@ -25,8 +25,8 @@ public class Main
      */
     public static void sendMsg (String msg)
     {
-    	System.out.print(msg);
-    	System.out.flush();
+    	System.out.println(msg);
+    	//System.out.flush();
     }
 
     /**
@@ -59,9 +59,13 @@ public class Main
 	{
         try
 	{
-	OutputStream output = new FileOutputStream("/home/mbax2vh2/Kalaha/KalahaLog.log");
+	String filePath = System.getProperty("user.dir");
+	filePath += "/KalahaLog.log";
+	OutputStream output = new FileOutputStream(filePath);
+
 	PrintStream printOut = new PrintStream(output);
 	System.setErr(printOut);
+		System.err.println(filePath);
 	String s;
 	while (true)
 	{
@@ -76,7 +80,7 @@ public class Main
 				case START: System.err.println("A start.");
 					boolean first = Protocol.interpretStartMsg(s);
 					System.err.println("Starting player? " + first);
-					
+					sendMsg("MOVE;1");
 					break;
 				case STATE: System.err.println("A state.");
 					Board b = new Board(6,6);
