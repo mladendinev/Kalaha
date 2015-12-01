@@ -30,7 +30,6 @@ public class KalahaNode {
         evaluationFunction = 0;
         isLeafNode = false;
         this.side = side;
-
         this.children = new ArrayList<>(7);
 
     }
@@ -81,13 +80,36 @@ public class KalahaNode {
     public void addChildren() {
 
         for(int i = 0; i < 7; i++){
-            Board currentBoard = currentKalah.getBoard();
-            Kalah childKalah = new Kalah(new Board(currentBoard));
-            KalahaNode child = new KalahaNode(childKalah, side.opposite());
-            Move move = new Move(side, i + 1);
-            childKalah.makeMove(move);
-            children.add(child);
+            addChild(i);
         }
+    }
+
+    public void addChild(int i) {
+        Board currentBoard = currentKalah.getBoard();
+        Kalah childKalah = new Kalah(new Board(currentBoard));
+        KalahaNode child = new KalahaNode(childKalah, side.opposite());
+        Move move = new Move(side, i + 1);
+        childKalah.makeMove(move);
+        System.err.println("------------------" + "\n" + currentBoard.toString());
+
+        // Save the move we have made
+        child.setMoveChosen(move);
+        children.add(child);
+    }
+
+    public KalahaNode getChild(int i) {
+        return children.get(i);
+    }
+
+
+    public void saveOpponentsMove(Move moveMade)  {
+        currentKalah.makeMove(moveMade);
+        Board currentBoard = currentKalah.getBoard();
+        System.err.println("------------------" + "\n" + currentBoard.toString());
+        Kalah childKalah = new Kalah(new Board(currentBoard));
+        KalahaNode child = new KalahaNode(childKalah, moveMade.getSide());
+        // Save the move we have made
+        children.add(child);
     }
 
 }

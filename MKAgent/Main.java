@@ -67,9 +67,23 @@ public class Main
 			System.err.println(filePath);
 
 
-			KalahaTree tree;
+
+			// Create a board
 			Board b = new Board(7,7);
+
+			// Create a game using this board
 			Kalah kalahGame = new Kalah(b);
+
+			// Set the current player
+			Side currentSide = Side.SOUTH;
+
+			// Create the root of the tree
+			KalahaNode root = new KalahaNode(kalahGame, currentSide);
+			boolean isItMe = false;
+
+			KalahaTree tree = new KalahaTree(root);
+
+			int moveMade = 1;
 
 			String s;
 			while (true)
@@ -85,25 +99,57 @@ public class Main
 						case START: System.err.println("A start.");
 							boolean first = Protocol.interpretStartMsg(s);
 							System.err.println("Starting player? " + first);
-
-							Side side;
+							currentSide = Side.SOUTH;
 							if (first) {
-								side = Side.SOUTH;
+								isItMe = true;
 							}
 							else {
-								side = Side.NORTH;
+								isItMe = false;
 							}
-							KalahaNode root = new KalahaNode(kalahGame, side);
-							tree = new KalahaTree(root);
-							root.addChildren();
-							sendMsg("MOVE;1");
+
+
+							System.err.println("Tree node");
+
+							for (KalahaNode child : root.getChildren()) {
+								System.err.println("Child has chosen move " + child.getMoveChosen().getHole());
+							}
+							moveMade = 1;
+
+							sendMsg("MOVE;" + moveMade);
 							break;
 						case STATE: System.err.println("A state.");
-							Protocol.MoveTurn r = Protocol.interpretStateMsg (s, b);
+							Protocol.MoveTurn r = Protocol.interpretStateMsg (s, kalahGame.getBoard());
 							System.err.println("This was the move: " + r.move);
 							System.err.println("Is the game over? " + r.end);
 							if (!r.end) System.err.println("Is it our turn again? " + r.again);
-							System.err.print("The board:\n" + b);
+							System.err.print("The board:\n" + kalahGame.getBoard());
+
+
+							if (!isItMe){
+								root.saveOpponentsMove(new Move(currentSide, r.move ));
+								root = root.getChild(0);
+								root.addChildren();
+							}
+							else {
+								root.addChildren();
+								root = root.getChild(moveMade - 1);
+								sendMsg("MOVE;" + 2);
+							}
+
+							if(!r.again) {
+								currentSide = currentSide.opposite();
+								isItMe = !isItMe;
+							}
+
+
+
+
+
+
+							/*for (KalahaNode child : root.getChildren()) {
+								System.err.println("After some time child has chosen move " + child.getMoveChosen().getHole());
+							}
+							System.err.println();*/
 							break;
 						case END: System.err.println("An end. Bye bye!"); return;
 					}
