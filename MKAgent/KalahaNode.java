@@ -3,10 +3,8 @@ package MKAgent;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by mbax2vh2 on 01/12/15.
- */
-public class KalahaNode {
+
+public class  KalahaNode {
 
     private List<KalahaNode> children;
 
@@ -19,27 +17,25 @@ public class KalahaNode {
     // Contains the player and the move made
     private Move moveChosen;
 
-    private int payoff;
-
     private final boolean isLeafNode;
 
-    private Side side;
+    private KalahaNode parent;
 
-    public KalahaNode(Kalah currentKalah, Side side) {
+    private boolean myTurn;
+
+    public KalahaNode(Kalah currentKalah, boolean myTurn) {
         this.currentKalah = currentKalah;
         evaluationFunction = 0;
         isLeafNode = false;
-        this.side = side;
-
-        this.children = new ArrayList<>(7);
-
+        this.children = new ArrayList<>();
+        this.myTurn = myTurn;
     }
 
-    public KalahaNode(Kalah currentKalah, Side side, boolean isLeafNode) {
+    public KalahaNode(Kalah currentKalah,boolean isLeafNode,boolean myTurn) {
         this.currentKalah = currentKalah;
         this.isLeafNode = isLeafNode;
         evaluationFunction = 0;
-        this.side = side;
+        this.myTurn = myTurn;
     }
 
     public Move getMoveChosen() {
@@ -62,14 +58,6 @@ public class KalahaNode {
         return currentKalah;
     }
 
-    public int getPayoff() {
-        return payoff;
-    }
-
-    public void setPayoff(int payoff) {
-        this.payoff = payoff;
-    }
-
     public boolean isLeafNode() {
         return isLeafNode;
     }
@@ -81,13 +69,35 @@ public class KalahaNode {
     public void addChildren() {
 
         for(int i = 0; i < 7; i++){
-            Board currentBoard = currentKalah.getBoard();
-            Kalah childKalah = new Kalah(new Board(currentBoard));
-            KalahaNode child = new KalahaNode(childKalah, side.opposite());
-            Move move = new Move(side, i + 1);
-            childKalah.makeMove(move);
-            children.add(child);
+            addChild(i);
         }
+    }
+
+    public void addChild(int i) {
+        Board currentBoard = currentKalah.getBoard();
+        Kalah childKalah = new Kalah(new Board(currentBoard));
+        KalahaNode child = new KalahaNode(childKalah, side.opposite());
+        Move move = new Move(side, i + 1);
+        childKalah.makeMove(move);
+        System.err.println("------------------" + "\n" + currentBoard.toString());
+
+        // Save the move we have made
+        child.setMoveChosen(move);
+        children.add(child);
+    }
+
+    public KalahaNode getChild(int i) {
+        return children.get(i);
+    }
+
+    public void saveOpponentsMove(Move moveMade)  {
+        currentKalah.makeMove(moveMade);
+        Board currentBoard = currentKalah.getBoard();
+        System.err.println("------------------" + "\n" + currentBoard.toString());
+        Kalah childKalah = new Kalah(new Board(currentBoard));
+        KalahaNode child = new KalahaNode(childKalah, moveMade.getSide());
+        // Save the move we have made
+        children.add(child);
     }
 
 }

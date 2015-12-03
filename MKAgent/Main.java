@@ -51,6 +51,8 @@ public class Main
 		return message.toString();
     }
 
+	static Side mySide;
+
 	/**
 	 * The main method, invoked when the program is started.
 	 * @param args Command line arguments.
@@ -86,12 +88,11 @@ public class Main
 							boolean first = Protocol.interpretStartMsg(s);
 							System.err.println("Starting player? " + first);
 
-							Side side;
 							if (first) {
-								side = Side.SOUTH;
+								mySide = Side.SOUTH;
 							}
 							else {
-								side = Side.NORTH;
+								mySide = Side.NORTH;
 							}
 							KalahaNode root = new KalahaNode(kalahGame, side);
 							tree = new KalahaTree(root);
