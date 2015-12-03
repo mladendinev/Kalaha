@@ -21,21 +21,21 @@ public class  KalahaNode {
 
     private KalahaNode parent;
 
-    private boolean myTurn;
+    private Side side;
 
-    public KalahaNode(Kalah currentKalah, boolean myTurn) {
-        this.currentKalah = currentKalah;
-        evaluationFunction = 0;
-        isLeafNode = false;
-        this.children = new ArrayList<>();
-        this.myTurn = myTurn;
+    public KalahaNode(Kalah currentKalah, Side side) {
+        this(currentKalah, side, false);
     }
 
-    public KalahaNode(Kalah currentKalah,boolean isLeafNode,boolean myTurn) {
+    public KalahaNode(Kalah currentKalah, Side side, boolean isLeafNode) {
         this.currentKalah = currentKalah;
         this.isLeafNode = isLeafNode;
-        evaluationFunction = 0;
-        this.myTurn = myTurn;
+
+        Board b = currentKalah.getBoard();
+
+        evaluationFunction = b.getSeedsInStore(Side.mySide) - b.getSeedsInStore(Side.mySide.opposite());
+        this.children = new ArrayList<>();
+        this.side = side;
     }
 
     public Move getMoveChosen() {
@@ -46,12 +46,12 @@ public class  KalahaNode {
         this.moveChosen = moveChosen;
     }
 
-    public int getEvaluationFunction() {
-        return evaluationFunction;
+    public Side getSide() {
+        return side;
     }
 
-    public void setEvaluationFunction(int evaluationFunction) {
-        this.evaluationFunction = evaluationFunction;
+    public int getEvaluationFunction() {
+        return evaluationFunction;
     }
 
     public Kalah getCurrentKalah() {
@@ -66,20 +66,27 @@ public class  KalahaNode {
         return children;
     }
 
-    public void addChildren() {
+    public List<KalahaNode> addChildren() {
+        Board b = currentKalah.getBoard();
 
         for(int i = 0; i < 7; i++){
-            addChild(i);
+            if(b.getSeeds(side, i+1) > 0) {
+                addChild(i);
+            }
         }
+
+        return children;
     }
 
     public void addChild(int i) {
+
+        //TODO Check side of the player and then do the move
         Board currentBoard = currentKalah.getBoard();
         Kalah childKalah = new Kalah(new Board(currentBoard));
         KalahaNode child = new KalahaNode(childKalah, side.opposite());
         Move move = new Move(side, i + 1);
         childKalah.makeMove(move);
-        System.err.println("------------------" + "\n" + currentBoard.toString());
+        //System.err.println("------------------" + "\n" + currentBoard.toString());
 
         // Save the move we have made
         child.setMoveChosen(move);
@@ -90,14 +97,41 @@ public class  KalahaNode {
         return children.get(i);
     }
 
-    public void saveOpponentsMove(Move moveMade)  {
-        currentKalah.makeMove(moveMade);
-        Board currentBoard = currentKalah.getBoard();
-        System.err.println("------------------" + "\n" + currentBoard.toString());
-        Kalah childKalah = new Kalah(new Board(currentBoard));
-        KalahaNode child = new KalahaNode(childKalah, moveMade.getSide());
-        // Save the move we have made
-        children.add(child);
+    private static String repeat(String s, int times){
+        StringBuilder sb = new StringBuilder();
+
+        for(int i=0; i < times; i++){
+            sb.append(s);
+        }
+
+        return sb.toString();
+    }
+
+    public String toString(int depth){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(repeat("\t\t", depth))
+          .append(side + "   ")
+          .append(currentKalah.getBoard().toString());
+
+        for(KalahaNode n : children){
+            sb.append(n.toString(depth + 1));
+        }
+
+        return sb.toString();
+
+    }
+
+    public static void createChildren(KalahaNode node, int depth) {
+        if(depth == 0){
+            return;
+        }
+
+        List<KalahaNode> newChildren = node.addChildren();
+
+        for(KalahaNode child : newChildren){
+            createChildren(child, depth-1);
+        }
     }
 
 }

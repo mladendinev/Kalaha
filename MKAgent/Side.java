@@ -18,4 +18,10 @@ public enum Side
 			default: return NORTH;  // dummy
 		}
 	}
+
+	public static Side mySide;
+
+	public static boolean myTurn(Side s){
+		return s == mySide;
+	}
 }

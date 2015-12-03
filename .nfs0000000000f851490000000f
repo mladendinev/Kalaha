@@ -1,0 +1,38 @@
+/home/mbax2md2/COMP34120/Kalaha/KalahaLog.log
+
+Received: START;South
+A start.
+Starting player? true
+Alpha beta prunning ROOT: 1
+Alpha beta prunning: 1
+Alpha beta prunning: 1
+Alpha beta prunning: 1
+Alpha beta prunning: 1
+Alpha beta prunning: 1
+Alpha beta prunning: 1
+Alpha beta prunning: 1
+
+Received: CHANGE;1;7,7,7,7,7,7,7,0,0,8,8,8,8,8,8,1;OPP
+A state.
+This was the move: 1
+Is the game over? false
+Is it our turn again? false
+The board:
+0  --  7  7  7  7  7  7  7     ~    0  8  8  8  8  8  8  --  1
+
+Received: CHANGE;1;0,8,8,8,8,8,8,1,0,8,8,8,8,8,8,1;OPP
+A state.
+This was the move: 1
+Is the game over? false
+Is it our turn again? false
+The board:
+1  --  8  8  8  8  8  8  0     ~    0  8  8  8  8  8  8  --  1
+
+Received: CHANGE;2;0,0,9,9,9,9,9,2,1,9,8,8,8,8,8,1;YOU
+A state.
+This was the move: 2
+Is the game over? false
+Is it our turn again? true
+The board:
+2  --  9  9  9  9  9  0  0     ~    1  9  8  8  8  8  8  --  1
+
