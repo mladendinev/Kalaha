@@ -15,6 +15,9 @@ import java.util.List;
  */
 public class Main
 {
+	public static final int DEPTH = 4;
+
+
 	/**
 	 * Input from the game engine.
 	 */
@@ -69,10 +72,11 @@ public class Main
 
 			// Create a board
 			Board b = new Board(7,7);
+			Kalah kalahGame = new Kalah(b);
+			// Create the root of the tree
+			KalahaNode root = null;
 
-			int depth = 4;
-
-			int moveMade = 1;
+			int moveMade = 2;
 
 			String s;
 			while (true)
@@ -82,7 +86,7 @@ public class Main
 				System.err.print("Received: " + s);
 				System.err.flush();
 				// Create a game using this board
-				Kalah kalahGame = new Kalah(b);
+
 				try {
 					MsgType mt = Protocol.getMessageType(s);
 					switch (mt)
@@ -93,14 +97,12 @@ public class Main
 
 							Side.mySide = first ? Side.SOUTH : Side.NORTH;
 
-							// Create the root of the tree
-							KalahaNode root = new KalahaNode(kalahGame, Side.SOUTH);
-
-							KalahaNode.createChildren(root, 5);
+							root = new KalahaNode(kalahGame, Side.SOUTH);
+							KalahaNode.createChildren(root, DEPTH);
 
 							//System.err.println("MINIMAX of the ROOT: " + Minimax.minimax(root, 6));
 
-							System.err.println("Alpha beta prunning ROOT: " + Minimax.alphabeta(root, 5, Integer.MIN_VALUE, Integer.MAX_VALUE));
+							System.err.println("Alpha beta prunning ROOT: " + Minimax.alphabeta(root, DEPTH, Integer.MIN_VALUE, Integer.MAX_VALUE));
 
 //							for(KalahaNode rootChild : root.getChildren()){
 //								//System.err.println("MINIMAX of the child: " + Minimax.minimax(rootChild, 5));
@@ -109,14 +111,6 @@ public class Main
 //							}
 
 
-//							System.err.println("Tree node");
-//
-//							for (KalahaNode child : root.getChildren()) {
-//								System.err.println("Child has chosen move " + child.getMoveChosen().getHole());
-//							}
-							moveMade = 1;
-
-							System.err.println(root.toString(3));
 
 							sendMsg("MOVE;" + moveMade);
 							break;
@@ -126,29 +120,35 @@ public class Main
 							System.err.println("Is the game over? " + r.end);
 							if (!r.end) System.err.println("Is it our turn again? " + r.again);
 							System.err.print("The board:\n" + kalahGame.getBoard());
+							if(r.again){
+								//we make a move on our root
+								System.err.println("This was our move: " + r.move);
 
 
-//							if (!isItMe){
-//								root.saveOpponentsMove(new Move(currentSide, r.move ));
-//								root = root.getChild(0);
-//								root.addChildren();
-//							}
-//							else {
-//								root.addChildren();
-//								root = root.getChild(moveMade - 1);
-//								sendMsg("MOVE;" + 2);
-//							}
-//
-//							if(!r.again) {
-//								currentSide = currentSide.opposite();
-//								isItMe = !isItMe;
-//							}
+								root = root.getChild(r.move);
+								System.err.println(root.getChildren().toString());
+								System.err.println(root.toString(0));
 
 
-							/*for (KalahaNode child : root.getChildren()) {
-								System.err.println("After some time child has chosen move " + child.getMoveChosen().getHole());
 							}
-							System.err.println();*/
+							else{
+								System.err.println("This was the move: " + r.move);
+
+
+								root = root.getChild(r.move);
+								System.err.println(root.getChildren().toString());
+								System.err.println(root.toString(0));
+
+							}
+
+
+
+
+
+
+
+
+
 							break;
 						case END: System.err.println("An end. Bye bye!"); return;
 					}

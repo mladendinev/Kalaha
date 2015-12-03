@@ -1,21 +1,20 @@
 package MKAgent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class  KalahaNode {
 
-    private List<KalahaNode> children;
+    private Map<Integer, KalahaNode> children;
 
     //TODO do we need to store the whole board??
     private final Kalah currentKalah;
 
     // Create a new class for the board
     private int evaluationFunction;
-
-    // Contains the player and the move made
-    private Move moveChosen;
 
     private final boolean isLeafNode;
 
@@ -34,17 +33,10 @@ public class  KalahaNode {
         Board b = currentKalah.getBoard();
 
         evaluationFunction = b.getSeedsInStore(Side.mySide) - b.getSeedsInStore(Side.mySide.opposite());
-        this.children = new ArrayList<>();
+        this.children = new HashMap<Integer, KalahaNode>();
         this.side = side;
     }
 
-    public Move getMoveChosen() {
-        return moveChosen;
-    }
-
-    public void setMoveChosen(Move moveChosen) {
-        this.moveChosen = moveChosen;
-    }
 
     public Side getSide() {
         return side;
@@ -62,20 +54,19 @@ public class  KalahaNode {
         return isLeafNode;
     }
 
-    public List<KalahaNode> getChildren() {
+    public Map<Integer, KalahaNode> getChildren() {
         return children;
     }
 
-    public List<KalahaNode> addChildren() {
+    public void addChildren() {
         Board b = currentKalah.getBoard();
-
-        for(int i = 0; i < 7; i++){
-            if(b.getSeeds(side, i+1) > 0) {
+        for (int i : b.getValidHoles(this.getSide())) {
                 addChild(i);
-            }
         }
+    }
 
-        return children;
+    public Board getBoard(){
+        return currentKalah.getBoard();
     }
 
     public void addChild(int i) {
@@ -83,14 +74,12 @@ public class  KalahaNode {
         //TODO Check side of the player and then do the move
         Board currentBoard = currentKalah.getBoard();
         Kalah childKalah = new Kalah(new Board(currentBoard));
-        KalahaNode child = new KalahaNode(childKalah, side.opposite());
-        Move move = new Move(side, i + 1);
-        childKalah.makeMove(move);
+        Move move = new Move(side, i);
+        Side nodeSide = childKalah.makeMove(move);
+        KalahaNode child = new KalahaNode(childKalah, nodeSide);
         //System.err.println("------------------" + "\n" + currentBoard.toString());
 
-        // Save the move we have made
-        child.setMoveChosen(move);
-        children.add(child);
+        children.put(i,child);
     }
 
     public KalahaNode getChild(int i) {
@@ -114,8 +103,9 @@ public class  KalahaNode {
           .append(side + "   ")
           .append(currentKalah.getBoard().toString());
 
-        for(KalahaNode n : children){
-            sb.append(n.toString(depth + 1));
+        for(Map.Entry<Integer, KalahaNode> e : children.entrySet()){
+            sb.append("KEY: " + e.getKey())
+              .append(e.getValue().toString(depth + 1));
         }
 
         return sb.toString();
@@ -127,9 +117,9 @@ public class  KalahaNode {
             return;
         }
 
-        List<KalahaNode> newChildren = node.addChildren();
+        node.addChildren();
 
-        for(KalahaNode child : newChildren){
+        for(KalahaNode child : node.getChildren().values()){
             createChildren(child, depth-1);
         }
     }

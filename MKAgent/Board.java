@@ -1,4 +1,6 @@
 package MKAgent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 
 /**
@@ -132,6 +134,19 @@ public class Board extends Observable implements Cloneable
 
     	return board[indexOfSide(side)][hole];
     }
+
+	public List<Integer> getValidHoles(Side side){
+		List<Integer> validHoles = new ArrayList<>(7);
+
+		for(int i=1; i <= 7; i++){
+			if(getSeeds(side, i) > 0){
+				validHoles.add(i);
+			}
+		}
+
+		return validHoles;
+	}
+
 
     /**
      * Sets the number of seeds in a hole.
