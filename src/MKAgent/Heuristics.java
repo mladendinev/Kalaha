@@ -32,10 +32,6 @@ public class Heuristics {
 
             List<Integer> validHoles = board.getValidHoles(side);
 
-            //if(validHoles.isEmpty()){
-            //    break; //todo ????
-            // }
-
             int randomHole = validHoles.get(random.nextInt(validHoles.size()));
 
             Move move = new Move(side, randomHole);

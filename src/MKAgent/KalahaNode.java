@@ -6,8 +6,16 @@ import java.util.*;
 public class  KalahaNode {
 
     private final Board board;
-    private final Side side;
-    private Map<Integer, KalahaNode> children;
+
+    public void setSide(Side side) {
+        this.side = side;
+    }
+
+    private Side side;
+    //private Map<Integer, KalahaNode> children;
+
+    //public int upperBound = Integer.MAX_VALUE;
+    //public int lowerBound = Integer.MIN_VALUE;
 
     //private int payoff;
 
@@ -15,10 +23,16 @@ public class  KalahaNode {
         int bestIndex = -1;
         int bestValue = Integer.MIN_VALUE;
 
-        for(Map.Entry<Integer, KalahaNode> e : children.entrySet()){
+        System.err.println("Getting best move from: ");
+
+        for(Map.Entry<Integer, KalahaNode> e : generateChildren().entrySet()){
             KalahaNode child = e.getValue();
 
-            int childValue = Minimax.alphabeta(child, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            //int childValue = Minimax.alphabeta(child, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+            int childValue = MemoryTestDriver.IterativeDeepening(child, 3);
+
+            System.err.println("-> " + childValue);
 
             if(childValue > bestValue){
                 bestValue = childValue;
@@ -32,7 +46,7 @@ public class  KalahaNode {
     public KalahaNode(Board board, Side side) {
         this.board      = board;
         this.side       = side;
-        this.children   = null;
+       // this.children   = null;
         //this.payoff = 0;
     }
 
@@ -47,7 +61,7 @@ public class  KalahaNode {
     public Board getBoard(){
         return board;
     }
-
+/*
     public Collection<KalahaNode> getChildren(){
         if(children == null){
             return null;
@@ -80,26 +94,56 @@ public class  KalahaNode {
             child.createChildren(depth-1);
         }
     }
+    */
 
+    public Map<Integer,KalahaNode> generateChildren(){
+        List<Integer> validHoles = board.getValidHoles(side);
+
+        Map<Integer,KalahaNode> moves = new HashMap<Integer,KalahaNode>(validHoles.size());
+
+        for(int i : validHoles){
+            moves.put(i, generateChild(i));
+        }
+
+        return moves;
+    }
+
+    private KalahaNode generateChild(int i){
+        Board childBoard = new Board(board);
+        Move move = new Move(side, i);
+        Side childSide = Kalah.makeMove(childBoard,move);
+
+        return new KalahaNode(childBoard, childSide);
+    }
+/*
     public void createChildren() {
         List<Integer> validHoles = board.getValidHoles(side);
 
         this.children = new HashMap<Integer, KalahaNode>(validHoles.size());
         for (int i : validHoles) {
-            addChild(i);
+            this.children.put(i,generateChild(i));
         }
-    }
-
-    private void addChild(int i) {
-        Board childBoard = new Board(board);
-        Move move = new Move(side, i);
-        Side childSide = Kalah.makeMove(childBoard,move);
-
-        children.put(i,new KalahaNode(childBoard, childSide));
     }
 
     public KalahaNode getChild(int i){
         return children.get(i);
+    }*/
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        KalahaNode that = (KalahaNode) o;
+
+        if (!board.equals(that.board)) return false;
+        return side == that.side;
     }
 
+    @Override
+    public int hashCode() {
+        int result = board.hashCode();
+        result = 31 * result + side.hashCode();
+        return result;
+    }
 }

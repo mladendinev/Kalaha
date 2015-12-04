@@ -15,7 +15,7 @@ import java.io.PrintStream;
  */
 public class Main
 {
-	public static final int DEPTH = 4;
+	public static final int DEPTH = 1;
 
 	/**
 	 * Input from the game engine.
@@ -80,10 +80,8 @@ public class Main
 		try {
 			Board board = new Board(7,7);
 
-			KalahaNode root = new KalahaNode(new Board(board), Side.SOUTH); //South always starts
-			root.createChildren(DEPTH);
-
-			int moveMade = 2;
+			KalahaNode root = new KalahaNode(board, Side.SOUTH); //South always starts
+			//root.createChildren(DEPTH);
 
 			String s;
 			while (true)
@@ -101,7 +99,8 @@ public class Main
 
 							Side.mySide = first ? Side.SOUTH : Side.NORTH;
 
-							sendMsg("MOVE;" + moveMade);
+							//System.err.println("MEM ROOT " + MemoryTestDriver.IterativeDeepening(root, 4));
+							sendMsg("MOVE;" + 6);
 							break;
 						case STATE: System.err.println("A state.");
 							Protocol.MoveTurn r = Protocol.interpretStateMsg (s, board);
@@ -114,13 +113,17 @@ public class Main
 								Side.mySide = Side.mySide.opposite();
 							}
 							else {
-								root = root.getChild(r.move);
-								root.addNewLayer();
+								//root = root.getChild(r.move);
+								//root.addNewLayer();
 								System.err.print("The board as we think:\n" + root.getBoard());
 							}
 
 							if (r.again) {
+								root.setSide(Side.mySide);
 								sendMsg("MOVE;" + root.getBestMove());
+							}
+							else{
+								root.setSide(Side.mySide.opposite());
 							}
 
 							break;

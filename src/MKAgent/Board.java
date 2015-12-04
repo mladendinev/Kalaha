@@ -1,6 +1,7 @@
 package MKAgent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 
@@ -298,6 +299,21 @@ public class Board extends Observable implements Cloneable
 		boardString.append("--  " + board[SOUTH_ROW][0] + "\n");
 
 		return boardString.toString();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Board board1 = (Board) o;
+
+		return Arrays.deepEquals(board, board1.board);
+	}
+
+	@Override
+	public int hashCode() {
+		return Arrays.deepHashCode(board);
 	}
 }
 
