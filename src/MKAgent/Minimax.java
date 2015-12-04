@@ -18,23 +18,22 @@ public class Minimax {
 
         if (Side.myTurn(node.getSide())) {
             value = Integer.MIN_VALUE;
-            for (KalahaNode child: node.getChildren().values()){
+            for (KalahaNode child: node.getChildren()){
                 value = Math.max(value, alphabeta(child,depth -1, alpha, beta));
                 alpha = Math.max(alpha, value);
-                if ( beta <= alpha) {
+                if (beta <= alpha) {
                     break;
                 }
             }
         }
         else {
             value = Integer.MAX_VALUE;
-            for (KalahaNode child: node.getChildren().values()){
+            for (KalahaNode child: node.getChildren()){
                 value = Math.min(value, alphabeta(child, depth - 1, alpha, beta));
                 alpha = Math.min(beta, value);
-                if ( beta <= alpha) {
+                if (beta <= alpha) {
                     break;
                 }
-
             }
         }
 
