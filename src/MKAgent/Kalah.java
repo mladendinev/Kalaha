@@ -1,6 +1,7 @@
 package MKAgent;
+
 /**
- * This class deals with moves on a Kalah board.
+ * This class deals with moves on a MKAgent.Kalah board.
  */
 public class Kalah
 {
@@ -104,7 +105,7 @@ public class Kalah
 		      opponent's kalahah is skipped.
 		   2. outcome:
 		    	1. if the last counter is put into the player's kalahah, the player is allowed to
-		    	   move again (such a move is called a Kalah-move);
+		    	   move again (such a move is called a MKAgent.Kalah-move);
 		    	2. if the last counter is put in an empty hole on the player's side of the board
 		    	   and the opposite hole is non-empty,
 		    	   a capture takes place: all stones in the opposite opponents pit and the last

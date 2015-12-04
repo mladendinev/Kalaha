@@ -4,7 +4,7 @@ GAME ENGINE
 
 Behavioural & Architectural Requirements:
 
-REQ1: The engine lets two agents play Kalah (including the pie rule - aka. swap
+REQ1: The engine lets two agents play MKAgent.Kalah (including the pie rule - aka. swap
       rule) against each other.
 REQ2: The engine surveils the rules of the game.
 REQ3a: The engine starts the agent applications (given as command line

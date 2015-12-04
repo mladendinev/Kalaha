@@ -1,4 +1,5 @@
 package MKAgent;
+
 /**
  * Types of messages the game engine can send to the agent.
  */

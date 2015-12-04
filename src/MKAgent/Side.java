@@ -1,6 +1,7 @@
 package MKAgent;
+
 /**
- * The side of the Kalah board a player can choose.
+ * The side of the MKAgent.Kalah board a player can choose.
  */
 public enum Side
 {

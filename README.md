@@ -7,4 +7,4 @@
 
 To compile the AI Agent run this command:
 
-javac MKAgent/*.java && jar cvfe MKAgent.jar MKAgent.Main MKAgent/*.class
+javac MKAgent/*.java && jar cvfe MKAgent.jar MKAgent.MKAgent.Main MKAgent/*.class

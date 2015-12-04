@@ -1,10 +1,11 @@
 package MKAgent;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
 /**
- * Representation of the Kalah board.<BR><BR>
+ * Representation of the MKAgent.Kalah board.<BR><BR>
  * The board has two sides: "North" and
  * "South". On each side there is a number of linearly arranged "holes" (the
  * same number on each side) and a "store" for each side. Holes are numbered
@@ -136,7 +137,7 @@ public class Board extends Observable implements Cloneable
     }
 
 	public List<Integer> getValidHoles(Side side){
-		List<Integer> validHoles = new ArrayList<>(7);
+		List<Integer> validHoles = new ArrayList<Integer>(7);
 
 		for(int i=1; i <= 7; i++){
 			if(getSeeds(side, i) > 0){
