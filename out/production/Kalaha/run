@@ -1,0 +1,2 @@
+java -jar ManKalah.jar "java -jar ${1}" "java -jar ${2}"
+

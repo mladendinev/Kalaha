@@ -1,6 +1,8 @@
 package MKAgent;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 /**
  * Created by mbax2md2 on 03/12/15.
@@ -40,15 +42,15 @@ public class Minimax {
 
         if (depth == 0){
             //return Heuristics.monteCarlo(node, 50);
-            //return Heuristics.getScore(node);
-            return node.getEvaluationFunction();
+            return Heuristics.getScore(node);
+            //return node.getEvaluationFunction();
 
             //return node.getBoard().getSeedsInStore(Side.mySide) - 50;
         }
 
         if(Kalah.gameOver(node.getBoard())){
-            return node.getEvaluationFunction();
-            //return Heuristics.getScore(node);
+            //return node.getEvaluationFunction();
+            return Heuristics.getScore(node);
         }
 
         int g;
@@ -68,7 +70,9 @@ public class Minimax {
         else {
             g = Integer.MAX_VALUE;
             int b = beta;
-            for (KalahaNode child: node.getChildrenSorted()){
+            List<KalahaNode> children = node.getChildrenSorted();
+            Collections.sort(children, Collections.reverseOrder());
+            for (KalahaNode child: children){
                 g = Math.min(g, alphabeta(child, depth - 1, alpha, b));
                 alpha = Math.min(b, g);
                 if (g <= alpha) {

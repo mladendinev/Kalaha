@@ -49,7 +49,25 @@ public class Heuristics {
 
         int score = 0;
 
-        int mySeeds = board.getSeedsInStore(Side.mySide);
+        int[] heuristics = new int[4];
+        heuristics[0] = node.getEvaluationFunction();
+
+        heuristics[1] = holeCapture(board, side);
+
+        heuristics[2] = canGetExtraTurn(board, side);
+
+        heuristics[3] = howCloseIsMyOpponentToWinning(board, side);
+
+        // {4,0,20} - draw
+        double[] weights = {1.0,1.0,1.0, 0.0};
+
+        for (int index = 0; index < weights.length; index++) {
+            score += (double) (heuristics[index] * weights[index]);
+        }
+
+
+
+        /*int mySeeds = board.getSeedsInStore(Side.mySide);
         int oppSeeds = board.getSeedsInStore(Side.mySide.opposite());
 
         int seedsDiff = mySeeds - oppSeeds;
@@ -74,7 +92,7 @@ public class Heuristics {
         score += seedsDiff;
         score += captureScore;
         score += extraTurnScore;
-        score += (board.getSeedsOnSide(Side.mySide) - board.getSeedsOnSide(Side.mySide.opposite()))/ 3.0;
+        score += (board.getSeedsOnSide(Side.mySide) - board.getSeedsOnSide(Side.mySide.opposite()))/ 3.0;*/
 
         //int monte = monteCarlo(node, 10);
 
@@ -83,12 +101,38 @@ public class Heuristics {
         return score;
     }
 
-    public static boolean canGetExtraTurn(Board board, Side side){
+    /*public static boolean canGetExtraTurn(Board board, Side side){
         return isSeedable(board, side, 0);
+    }*/
+
+    public static int canGetExtraTurn(Board board, Side side) {
+        int kalahaLocation = 8;
+        for (int hole = 1; hole < 8; hole++) {
+            if (board.getSeeds(side, hole) == (kalahaLocation - hole)) {
+                return 1;
+            }
+        }
+        return 0;
     }
 
-    public static boolean canCapture(Board board, Side side, int hole){
+    /*public static boolean canCapture(Board board, Side side, int hole){
         return board.getSeeds(side, hole) == 0 && isSeedable(board, side, hole);
+    }*/
+
+    public static int holeCapture(Board board, Side side) {
+        for (int index = 1; index < 8; index++) {
+            // Check to see if there are any holes which have 0 seeds in them
+            if (board.getSeeds(side, index) == 0 ) {
+                // If there are check to see if we can capture there
+                for (int hole = 1; hole < index; hole ++) {
+                    if (board.getSeeds(side, hole) == (index - board.getSeeds(side, hole))) {
+                        return board.getSeeds(side.opposite(), index) + 1;
+                    }
+                }
+            }
+        }
+
+        return 0;
     }
 
     public static boolean isSeedable(Board board, Side side, int hole) {
@@ -100,5 +144,11 @@ public class Heuristics {
         }
 
         return false;
+    }
+
+    private static int howCloseIsMyOpponentToWinning(Board board, Side side) {
+        int numberOfSeedsInHisKalah = board.getSeedsInStore(side.opposite());
+        return 50 - numberOfSeedsInHisKalah;
+
     }
 }

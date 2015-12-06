@@ -1,0 +1,882 @@
+Received: START;South
+
+A start.
+Starting player? true
+Sending**** MOVE;2
+Received: CHANGE;2;8,7,7,7,7,7,7,0,7,0,8,8,8,8,8,1;OPP
+
+A state.
+This was the move: 2
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+0  --  7  7  7  7  7  7  8     ~    7  0  8  8  8  8  8  --  1
+The board as we think:
+0  --  7  7  7  7  7  7  8     ~    7  0  8  8  8  8  8  --  1
+Received: CHANGE;SWAP;8,7,7,7,7,7,7,0,7,0,8,8,8,8,8,1;YOU
+
+A state.
+This was the move: -1
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+0  --  7  7  7  7  7  7  8     ~    7  0  8  8  8  8  8  --  1
+The board as we think:
+0  --  7  7  7  7  7  7  8     ~    7  0  8  8  8  8  8  --  1
+Getting best move from: 
+-> -1.0
+-> -1.0
+-> -1.0
+-> -1.0
+-> -1.0
+-> -1.0
+-> -1.0
+best value is MOVE;1 with value: -1
+Sending**** MOVE;1
+Received: CHANGE;1;0,8,8,8,8,8,8,1,8,0,8,8,8,8,8,1;OPP
+
+A state.
+This was the move: 1
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+1  --  8  8  8  8  8  8  0     ~    8  0  8  8  8  8  8  --  1
+The board as we think:
+1  --  8  8  8  8  8  8  0     ~    8  0  8  8  8  8  8  --  1
+Received: CHANGE;5;1,9,9,9,9,8,8,1,8,0,8,8,0,9,9,2;YOU
+
+A state.
+This was the move: 5
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+1  --  8  8  9  9  9  9  1     ~    8  0  8  8  0  9  9  --  2
+The board as we think:
+1  --  8  8  9  9  9  9  1     ~    8  0  8  8  0  9  9  --  2
+Getting best move from: 
+-> -2.0
+-> -1.0
+-> -1.0
+-> -1.0
+-> -1.0
+-> -1.0
+-> -1.0
+best value is MOVE;2 with value: -1
+Sending**** MOVE;2
+Received: CHANGE;2;1,0,10,10,10,9,9,2,9,1,9,8,0,9,9,2;OPP
+
+A state.
+This was the move: 2
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+2  --  9  9  10  10  10  0  1     ~    9  1  9  8  0  9  9  --  2
+The board as we think:
+2  --  9  9  10  10  10  0  1     ~    9  1  9  8  0  9  9  --  2
+Received: CHANGE;1;2,1,10,10,10,9,9,2,0,2,10,9,1,10,10,3;YOU
+
+A state.
+This was the move: 1
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+2  --  9  9  10  10  10  1  2     ~    0  2  10  9  1  10  10  --  3
+The board as we think:
+2  --  9  9  10  10  10  1  2     ~    0  2  10  9  1  10  10  --  3
+Getting best move from: 
+-> -13.0
+-> -13.0
+-> -1.0
+-> -1.0
+-> -1.0
+-> -1.0
+-> -1.0
+best value is MOVE;3 with value: -1
+Sending**** MOVE;3
+Received: CHANGE;3;2,1,0,11,11,10,10,3,1,3,11,10,2,10,10,3;OPP
+
+A state.
+This was the move: 3
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+3  --  10  10  11  11  0  1  2     ~    1  3  11  10  2  10  10  --  3
+The board as we think:
+3  --  10  10  11  11  0  1  2     ~    1  3  11  10  2  10  10  --  3
+Received: CHANGE;5;2,1,0,11,11,10,10,3,1,3,11,10,0,11,11,3;YOU
+
+A state.
+This was the move: 5
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+3  --  10  10  11  11  0  1  2     ~    1  3  11  10  0  11  11  --  3
+The board as we think:
+3  --  10  10  11  11  0  1  2     ~    1  3  11  10  0  11  11  --  3
+Getting best move from: 
+-> -2.0
+-> -2.0
+-> 0.0
+-> 0.0
+-> 0.0
+-> 1.0
+best value is MOVE;7 with value: 1
+Sending**** MOVE;7
+Received: CHANGE;7;3,2,0,11,11,10,0,4,2,4,12,11,1,12,12,3;OPP
+
+A state.
+This was the move: 7
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+4  --  0  10  11  11  0  2  3     ~    2  4  12  11  1  12  12  --  3
+The board as we think:
+4  --  0  10  11  11  0  2  3     ~    2  4  12  11  1  12  12  --  3
+Received: CHANGE;1;3,2,0,11,11,10,0,4,0,5,13,11,1,12,12,3;YOU
+
+A state.
+This was the move: 1
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+4  --  0  10  11  11  0  2  3     ~    0  5  13  11  1  12  12  --  3
+The board as we think:
+4  --  0  10  11  11  0  2  3     ~    0  5  13  11  1  12  12  --  3
+Getting best move from: 
+-> -2.0
+-> -2.0
+-> -14.0
+-> -10.0
+-> -13.0
+best value is MOVE;1 with value: -2
+Sending**** MOVE;1
+Received: CHANGE;1;0,3,1,12,11,10,0,4,0,5,13,11,1,12,12,3;OPP
+
+A state.
+This was the move: 1
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+4  --  0  10  11  12  1  3  0     ~    0  5  13  11  1  12  12  --  3
+The board as we think:
+4  --  0  10  11  12  1  3  0     ~    0  5  13  11  1  12  12  --  3
+Received: CHANGE;4;1,4,2,13,12,11,1,4,0,5,13,0,2,13,13,4;YOU
+
+A state.
+This was the move: 4
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+4  --  1  11  12  13  2  4  1     ~    0  5  13  0  2  13  13  --  4
+The board as we think:
+4  --  1  11  12  13  2  4  1     ~    0  5  13  0  2  13  13  --  4
+Getting best move from: 
+-> -15.0
+-> -16.0
+-> -16.0
+-> 1.0
+-> 1.0
+-> -8.0
+-> 3.0
+best value is MOVE;7 with value: 3
+Sending**** MOVE;7
+Received: CHANGE;7;1,4,2,13,12,11,0,5,0,5,13,0,2,13,13,4;YOU
+
+A state.
+This was the move: 7
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+5  --  0  11  12  13  2  4  1     ~    0  5  13  0  2  13  13  --  4
+The board as we think:
+5  --  0  11  12  13  2  4  1     ~    0  5  13  0  2  13  13  --  4
+Getting best move from: 
+-> -14.0
+-> -14.0
+-> -14.0
+-> 2.0
+-> 2.0
+-> -7.0
+best value is MOVE;4 with value: 2
+Sending**** MOVE;4
+Received: CHANGE;4;2,5,2,0,13,12,1,6,1,6,14,1,3,14,14,4;OPP
+
+A state.
+This was the move: 4
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+6  --  1  12  13  0  2  5  2     ~    1  6  14  1  3  14  14  --  4
+The board as we think:
+6  --  1  12  13  0  2  5  2     ~    1  6  14  1  3  14  14  --  4
+Received: CHANGE;5;2,5,2,0,13,12,1,6,1,6,14,1,0,15,15,5;OPP
+
+A state.
+This was the move: 5
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+6  --  1  12  13  0  2  5  2     ~    1  6  14  1  0  15  15  --  5
+The board as we think:
+6  --  1  12  13  0  2  5  2     ~    1  6  14  1  0  15  15  --  5
+Received: CHANGE;2;2,5,2,0,13,12,1,6,1,0,15,2,1,16,16,6;OPP
+
+A state.
+This was the move: 2
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+6  --  1  12  13  0  2  5  2     ~    1  0  15  2  1  16  16  --  6
+The board as we think:
+6  --  1  12  13  0  2  5  2     ~    1  0  15  2  1  16  16  --  6
+Received: CHANGE;1;2,5,2,0,13,0,1,6,0,0,15,2,1,16,16,19;YOU
+
+A state.
+This was the move: 1
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+6  --  1  0  13  0  2  5  2     ~    0  0  15  2  1  16  16  --  19
+The board as we think:
+6  --  1  0  13  0  2  5  2     ~    0  0  15  2  1  16  16  --  19
+Getting best move from: 
+-> -29.0
+-> -29.0
+-> -29.0
+-> -17.0
+-> -11.0
+best value is MOVE;7 with value: -11
+Sending**** MOVE;7
+Received: CHANGE;7;2,5,2,0,13,0,0,7,0,0,15,2,1,16,16,19;YOU
+
+A state.
+This was the move: 7
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+7  --  0  0  13  0  2  5  2     ~    0  0  15  2  1  16  16  --  19
+The board as we think:
+7  --  0  0  13  0  2  5  2     ~    0  0  15  2  1  16  16  --  19
+Getting best move from: 
+-> -27.0
+-> -28.0
+-> -28.0
+-> -16.0
+best value is MOVE;5 with value: -16
+Sending**** MOVE;5
+Received: CHANGE;5;3,6,3,0,0,1,1,8,1,1,16,3,2,17,17,19;OPP
+
+A state.
+This was the move: 5
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+8  --  1  1  0  0  3  6  3     ~    1  1  16  3  2  17  17  --  19
+The board as we think:
+8  --  1  1  0  0  3  6  3     ~    1  1  16  3  2  17  17  --  19
+Received: CHANGE;6;4,7,4,1,1,2,2,8,2,2,17,4,3,1,19,21;OPP
+
+A state.
+This was the move: 6
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+8  --  2  2  1  1  4  7  4     ~    2  2  17  4  3  1  19  --  21
+The board as we think:
+8  --  2  2  1  1  4  7  4     ~    2  2  17  4  3  1  19  --  21
+Received: CHANGE;5;4,7,4,1,1,2,2,8,2,2,17,4,0,2,20,22;OPP
+
+A state.
+This was the move: 5
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+8  --  2  2  1  1  4  7  4     ~    2  2  17  4  0  2  20  --  22
+The board as we think:
+8  --  2  2  1  1  4  7  4     ~    2  2  17  4  0  2  20  --  22
+Received: CHANGE;4;4,7,4,1,1,2,2,8,2,2,17,0,1,3,21,23;OPP
+
+A state.
+This was the move: 4
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+8  --  2  2  1  1  4  7  4     ~    2  2  17  0  1  3  21  --  23
+The board as we think:
+8  --  2  2  1  1  4  7  4     ~    2  2  17  0  1  3  21  --  23
+Received: CHANGE;2;4,7,4,0,1,2,2,8,2,0,18,0,1,3,21,25;YOU
+
+A state.
+This was the move: 2
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+8  --  2  2  1  0  4  7  4     ~    2  0  18  0  1  3  21  --  25
+The board as we think:
+8  --  2  2  1  0  4  7  4     ~    2  0  18  0  1  3  21  --  25
+Getting best move from: 
+-> -19.0
+-> -18.0
+-> -19.0
+-> -19.0
+-> -14.0
+-> -17.0
+best value is MOVE;6 with value: -14
+Sending**** MOVE;6
+Received: CHANGE;6;4,7,4,0,1,0,3,9,2,0,18,0,1,3,21,25;YOU
+
+A state.
+This was the move: 6
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+9  --  3  0  1  0  4  7  4     ~    2  0  18  0  1  3  21  --  25
+The board as we think:
+9  --  3  0  1  0  4  7  4     ~    2  0  18  0  1  3  21  --  25
+Getting best move from: 
+-> -18.0
+-> -16.0
+-> -17.0
+-> -17.0
+-> -16.0
+best value is MOVE;2 with value: -16
+Sending**** MOVE;2
+Received: CHANGE;2;4,0,5,1,2,1,4,10,3,0,18,0,1,3,21,25;OPP
+
+A state.
+This was the move: 2
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+10  --  4  1  2  1  5  0  4     ~    3  0  18  0  1  3  21  --  25
+The board as we think:
+10  --  4  1  2  1  5  0  4     ~    3  0  18  0  1  3  21  --  25
+Received: CHANGE;6;5,0,5,1,2,1,4,10,3,0,18,0,1,0,22,26;YOU
+
+A state.
+This was the move: 6
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+10  --  4  1  2  1  5  0  5     ~    3  0  18  0  1  0  22  --  26
+The board as we think:
+10  --  4  1  2  1  5  0  5     ~    3  0  18  0  1  0  22  --  26
+Getting best move from: 
+-> -18.0
+-> -11.0
+-> -17.0
+-> -17.0
+-> -17.0
+-> -16.0
+best value is MOVE;3 with value: -11
+Sending**** MOVE;3
+Received: CHANGE;3;5,0,0,2,3,2,5,11,3,0,18,0,1,0,22,26;YOU
+
+A state.
+This was the move: 3
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+11  --  5  2  3  2  0  0  5     ~    3  0  18  0  1  0  22  --  26
+The board as we think:
+11  --  5  2  3  2  0  0  5     ~    3  0  18  0  1  0  22  --  26
+Getting best move from: 
+-> -19.0
+-> -16.0
+-> -9.0
+-> -12.0
+-> -15.0
+best value is MOVE;5 with value: -9
+Sending**** MOVE;5
+Received: CHANGE;5;5,0,0,2,0,3,6,12,3,0,18,0,1,0,22,26;YOU
+
+A state.
+This was the move: 5
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+12  --  6  3  0  2  0  0  5     ~    3  0  18  0  1  0  22  --  26
+The board as we think:
+12  --  6  3  0  2  0  0  5     ~    3  0  18  0  1  0  22  --  26
+Getting best move from: 
+-> -15.0
+-> -18.0
+-> -14.0
+-> -14.0
+best value is MOVE;6 with value: -14
+Sending**** MOVE;6
+Received: CHANGE;6;5,0,0,2,0,0,7,13,4,0,18,0,1,0,22,26;OPP
+
+A state.
+This was the move: 6
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+13  --  7  0  0  2  0  0  5     ~    4  0  18  0  1  0  22  --  26
+The board as we think:
+13  --  7  0  0  2  0  0  5     ~    4  0  18  0  1  0  22  --  26
+Received: CHANGE;1;5,0,0,2,0,0,7,13,0,1,19,1,2,0,22,26;YOU
+
+A state.
+This was the move: 1
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+13  --  7  0  0  2  0  0  5     ~    0  1  19  1  2  0  22  --  26
+The board as we think:
+13  --  7  0  0  2  0  0  5     ~    0  1  19  1  2  0  22  --  26
+Getting best move from: 
+-> -12.0
+-> -12.0
+-> -18.0
+best value is MOVE;4 with value: -12
+Sending**** MOVE;4
+Received: CHANGE;4;5,0,0,0,1,0,7,15,0,0,19,1,2,0,22,26;OPP
+
+A state.
+This was the move: 4
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+15  --  7  0  1  0  0  0  5     ~    0  0  19  1  2  0  22  --  26
+The board as we think:
+15  --  7  0  1  0  0  0  5     ~    0  0  19  1  2  0  22  --  26
+Received: CHANGE;4;5,0,0,0,1,0,7,15,0,0,19,0,3,0,22,26;YOU
+
+A state.
+This was the move: 4
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+15  --  7  0  1  0  0  0  5     ~    0  0  19  0  3  0  22  --  26
+The board as we think:
+15  --  7  0  1  0  0  0  5     ~    0  0  19  0  3  0  22  --  26
+Getting best move from: 
+-> -13.0
+-> -14.0
+-> -14.0
+best value is MOVE;5 with value: -13
+Sending**** MOVE;5
+Received: CHANGE;5;5,0,0,0,0,1,7,15,0,0,19,0,3,0,22,26;OPP
+
+A state.
+This was the move: 5
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+15  --  7  1  0  0  0  0  5     ~    0  0  19  0  3  0  22  --  26
+The board as we think:
+15  --  7  1  0  0  0  0  5     ~    0  0  19  0  3  0  22  --  26
+Received: CHANGE;5;5,0,0,0,0,1,7,15,0,0,19,0,0,1,23,27;OPP
+
+A state.
+This was the move: 5
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+15  --  7  1  0  0  0  0  5     ~    0  0  19  0  0  1  23  --  27
+The board as we think:
+15  --  7  1  0  0  0  0  5     ~    0  0  19  0  0  1  23  --  27
+Received: CHANGE;6;5,0,0,0,0,1,7,15,0,0,19,0,0,0,24,27;YOU
+
+A state.
+This was the move: 6
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+15  --  7  1  0  0  0  0  5     ~    0  0  19  0  0  0  24  --  27
+The board as we think:
+15  --  7  1  0  0  0  0  5     ~    0  0  19  0  0  0  24  --  27
+Getting best move from: 
+-> -13.0
+-> -13.0
+-> -15.0
+best value is MOVE;1 with value: -13
+Sending**** MOVE;1
+Received: CHANGE;1;0,1,1,1,1,2,7,15,0,0,19,0,0,0,24,27;OPP
+
+A state.
+This was the move: 1
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+15  --  7  2  1  1  1  1  0     ~    0  0  19  0  0  0  24  --  27
+The board as we think:
+15  --  7  2  1  1  1  1  0     ~    0  0  19  0  0  0  24  --  27
+Received: CHANGE;3;1,2,2,2,2,3,8,15,1,1,1,2,2,2,26,28;YOU
+
+A state.
+This was the move: 3
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+15  --  8  3  2  2  2  2  1     ~    1  1  1  2  2  2  26  --  28
+The board as we think:
+15  --  8  3  2  2  2  2  1     ~    1  1  1  2  2  2  26  --  28
+Getting best move from: 
+-> -18.0
+-> -15.0
+-> -16.0
+-> -16.0
+-> -15.0
+-> -14.0
+-> -16.0
+best value is MOVE;6 with value: -14
+Sending**** MOVE;6
+Received: CHANGE;6;1,2,2,2,2,0,9,16,2,1,1,2,2,2,26,28;OPP
+
+A state.
+This was the move: 6
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+16  --  9  0  2  2  2  2  1     ~    2  1  1  2  2  2  26  --  28
+The board as we think:
+16  --  9  0  2  2  2  2  1     ~    2  1  1  2  2  2  26  --  28
+Received: CHANGE;6;1,2,2,2,2,0,9,16,2,1,1,2,2,0,27,29;OPP
+
+A state.
+This was the move: 6
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+16  --  9  0  2  2  2  2  1     ~    2  1  1  2  2  0  27  --  29
+The board as we think:
+16  --  9  0  2  2  2  2  1     ~    2  1  1  2  2  0  27  --  29
+Received: CHANGE;7;3,4,4,4,4,2,11,16,4,3,3,4,3,1,1,31;YOU
+
+A state.
+This was the move: 7
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+16  --  11  2  4  4  4  4  3     ~    4  3  3  4  3  1  1  --  31
+The board as we think:
+16  --  11  2  4  4  4  4  3     ~    4  3  3  4  3  1  1  --  31
+Getting best move from: 
+-> -22.0
+-> -16.0
+-> -17.0
+-> -6.0
+-> -20.0
+-> -9.0
+-> -20.0
+best value is MOVE;4 with value: -6
+Sending**** MOVE;4
+Received: CHANGE;4;3,4,4,0,5,3,12,17,4,3,3,4,3,1,1,31;YOU
+
+A state.
+This was the move: 4
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+17  --  12  3  5  0  4  4  3     ~    4  3  3  4  3  1  1  --  31
+The board as we think:
+17  --  12  3  5  0  4  4  3     ~    4  3  3  4  3  1  1  --  31
+Getting best move from: 
+-> -17.0
+-> -15.0
+-> -16.0
+-> -15.0
+-> -19.0
+-> -13.0
+best value is MOVE;7 with value: -13
+Sending**** MOVE;7
+Received: CHANGE;7;4,5,5,0,5,3,0,24,5,4,4,0,4,2,2,31;OPP
+
+A state.
+This was the move: 7
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+24  --  0  3  5  0  5  5  4     ~    5  4  4  0  4  2  2  --  31
+The board as we think:
+24  --  0  3  5  0  5  5  4     ~    5  4  4  0  4  2  2  --  31
+Received: CHANGE;6;4,5,5,0,5,3,0,24,5,4,4,0,4,0,3,32;OPP
+
+A state.
+This was the move: 6
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+24  --  0  3  5  0  5  5  4     ~    5  4  4  0  4  0  3  --  32
+The board as we think:
+24  --  0  3  5  0  5  5  4     ~    5  4  4  0  4  0  3  --  32
+Received: CHANGE;2;4,0,5,0,5,3,0,24,5,0,5,1,5,0,3,38;YOU
+
+A state.
+This was the move: 2
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+24  --  0  3  5  0  5  0  4     ~    5  0  5  1  5  0  3  --  38
+The board as we think:
+24  --  0  3  5  0  5  0  4     ~    5  0  5  1  5  0  3  --  38
+Getting best move from: 
+-> -14.0
+-> -16.0
+-> -14.0
+-> -11.0
+best value is MOVE;3 with value: -11
+Sending**** MOVE;3
+Received: CHANGE;3;4,0,0,1,6,4,1,25,5,0,5,1,5,0,3,38;YOU
+
+A state.
+This was the move: 3
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+25  --  1  4  6  1  0  0  4     ~    5  0  5  1  5  0  3  --  38
+The board as we think:
+25  --  1  4  6  1  0  0  4     ~    5  0  5  1  5  0  3  --  38
+Getting best move from: 
+-> -14.0
+-> -14.0
+-> -13.0
+-> -20.0
+-> -10.0
+best value is MOVE;7 with value: -10
+Sending**** MOVE;7
+Received: CHANGE;7;4,0,0,1,6,4,0,26,5,0,5,1,5,0,3,38;YOU
+
+A state.
+This was the move: 7
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+26  --  0  4  6  1  0  0  4     ~    5  0  5  1  5  0  3  --  38
+The board as we think:
+26  --  0  4  6  1  0  0  4     ~    5  0  5  1  5  0  3  --  38
+Getting best move from: 
+-> -14.0
+-> -11.0
+-> -14.0
+-> -18.0
+best value is MOVE;5 with value: -11
+Sending**** MOVE;5
+Received: CHANGE;5;4,0,0,1,0,5,1,27,6,1,6,1,5,0,3,38;OPP
+
+A state.
+This was the move: 5
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+27  --  1  5  0  1  0  0  4     ~    6  1  6  1  5  0  3  --  38
+The board as we think:
+27  --  1  5  0  1  0  0  4     ~    6  1  6  1  5  0  3  --  38
+Received: CHANGE;3;5,0,0,1,0,5,1,27,6,1,0,2,6,1,4,39;YOU
+
+A state.
+This was the move: 3
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+27  --  1  5  0  1  0  0  5     ~    6  1  0  2  6  1  4  --  39
+The board as we think:
+27  --  1  5  0  1  0  0  5     ~    6  1  0  2  6  1  4  --  39
+Getting best move from: 
+-> -13.0
+-> -13.0
+-> -13.0
+-> -9.0
+best value is MOVE;7 with value: -9
+Sending**** MOVE;7
+Received: CHANGE;7;5,0,0,1,0,5,0,28,6,1,0,2,6,1,4,39;YOU
+
+A state.
+This was the move: 7
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+28  --  0  5  0  1  0  0  5     ~    6  1  0  2  6  1  4  --  39
+The board as we think:
+28  --  0  5  0  1  0  0  5     ~    6  1  0  2  6  1  4  --  39
+Getting best move from: 
+-> -13.0
+-> -13.0
+-> -12.0
+best value is MOVE;6 with value: -12
+Sending**** MOVE;6
+Received: CHANGE;6;5,0,0,1,0,0,1,29,7,2,1,2,6,1,4,39;OPP
+
+A state.
+This was the move: 6
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+29  --  1  0  0  1  0  0  5     ~    7  2  1  2  6  1  4  --  39
+The board as we think:
+29  --  1  0  0  1  0  0  5     ~    7  2  1  2  6  1  4  --  39
+Received: CHANGE;3;5,0,0,1,0,0,1,29,7,2,0,3,6,1,4,39;YOU
+
+A state.
+This was the move: 3
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+29  --  1  0  0  1  0  0  5     ~    7  2  0  3  6  1  4  --  39
+The board as we think:
+29  --  1  0  0  1  0  0  5     ~    7  2  0  3  6  1  4  --  39
+Getting best move from: 
+-> -12.0
+-> -12.0
+-> -5.0
+best value is MOVE;7 with value: -5
+Sending**** MOVE;7
+Received: CHANGE;7;5,0,0,1,0,0,0,30,7,2,0,3,6,1,4,39;YOU
+
+A state.
+This was the move: 7
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+30  --  0  0  0  1  0  0  5     ~    7  2  0  3  6  1  4  --  39
+The board as we think:
+30  --  0  0  0  1  0  0  5     ~    7  2  0  3  6  1  4  --  39
+Getting best move from: 
+-> -11.0
+-> -8.0
+best value is MOVE;1 with value: -8
+Sending**** MOVE;1
+Received: CHANGE;1;0,1,1,2,1,0,0,33,7,0,0,3,6,1,4,39;OPP
+
+A state.
+This was the move: 1
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+33  --  0  0  1  2  1  1  0     ~    7  0  0  3  6  1  4  --  39
+The board as we think:
+33  --  0  0  1  2  1  1  0     ~    7  0  0  3  6  1  4  --  39
+Received: CHANGE;1;0,1,1,2,1,0,0,33,0,1,1,4,7,2,5,40;OPP
+
+A state.
+This was the move: 1
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+33  --  0  0  1  2  1  1  0     ~    0  1  1  4  7  2  5  --  40
+The board as we think:
+33  --  0  0  1  2  1  1  0     ~    0  1  1  4  7  2  5  --  40
+Received: CHANGE;6;0,1,1,2,1,0,0,33,0,1,1,4,7,0,6,41;OPP
+
+A state.
+This was the move: 6
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+33  --  0  0  1  2  1  1  0     ~    0  1  1  4  7  0  6  --  41
+The board as we think:
+33  --  0  0  1  2  1  1  0     ~    0  1  1  4  7  0  6  --  41
+Received: CHANGE;5;1,2,2,3,1,0,0,33,0,1,1,4,0,1,7,42;YOU
+
+A state.
+This was the move: 5
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+33  --  0  0  1  3  2  2  1     ~    0  1  1  4  0  1  7  --  42
+The board as we think:
+33  --  0  0  1  3  2  2  1     ~    0  1  1  4  0  1  7  --  42
+Getting best move from: 
+-> -14.0
+-> -13.0
+-> -14.0
+-> -14.0
+-> -11.0
+best value is MOVE;5 with value: -11
+Sending**** MOVE;5
+Received: CHANGE;5;1,2,2,3,0,0,0,35,0,0,1,4,0,1,7,42;OPP
+
+A state.
+This was the move: 5
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+35  --  0  0  0  3  2  2  1     ~    0  0  1  4  0  1  7  --  42
+The board as we think:
+35  --  0  0  0  3  2  2  1     ~    0  0  1  4  0  1  7  --  42
+Received: CHANGE;4;1,2,2,3,0,0,0,35,0,0,1,0,1,2,8,43;OPP
+
+A state.
+This was the move: 4
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+35  --  0  0  0  3  2  2  1     ~    0  0  1  0  1  2  8  --  43
+The board as we think:
+35  --  0  0  0  3  2  2  1     ~    0  0  1  0  1  2  8  --  43
+Received: CHANGE;3;1,2,2,0,0,0,0,35,0,0,0,0,1,2,8,47;YOU
+
+A state.
+This was the move: 3
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+35  --  0  0  0  0  2  2  1     ~    0  0  0  0  1  2  8  --  47
+The board as we think:
+35  --  0  0  0  0  2  2  1     ~    0  0  0  0  1  2  8  --  47
+Getting best move from: 
+-> -17.0
+-> -16.0
+-> -16.0
+best value is MOVE;2 with value: -16
+Sending**** MOVE;2
+Received: CHANGE;2;1,0,3,1,0,0,0,35,0,0,0,0,1,2,8,47;OPP
+
+A state.
+This was the move: 2
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+35  --  0  0  0  1  3  0  1     ~    0  0  0  0  1  2  8  --  47
+The board as we think:
+35  --  0  0  0  1  3  0  1     ~    0  0  0  0  1  2  8  --  47
+Received: CHANGE;6;1,0,3,1,0,0,0,35,0,0,0,0,1,0,9,48;OPP
+
+A state.
+This was the move: 6
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+35  --  0  0  0  1  3  0  1     ~    0  0  0  0  1  0  9  --  48
+The board as we think:
+35  --  0  0  0  1  3  0  1     ~    0  0  0  0  1  0  9  --  48
+Received: CHANGE;5;1,0,3,1,0,0,0,35,0,0,0,0,0,1,9,48;YOU
+
+A state.
+This was the move: 5
+Is the game over? false
+Is it our turn again? true
+The board as we got it:
+35  --  0  0  0  1  3  0  1     ~    0  0  0  0  0  1  9  --  48
+The board as we think:
+35  --  0  0  0  1  3  0  1     ~    0  0  0  0  0  1  9  --  48
+Getting best move from: 
+-> -16.0
+-> -4.0
+-> -15.0
+best value is MOVE;1 with value: -4
+Sending**** MOVE;1
+Received: CHANGE;1;0,0,3,1,0,0,0,37,0,0,0,0,0,0,9,48;OPP
+
+A state.
+This was the move: 1
+Is the game over? false
+Is it our turn again? false
+The board as we got it:
+37  --  0  0  0  1  3  0  0     ~    0  0  0  0  0  0  9  --  48
+The board as we think:
+37  --  0  0  0  1  3  0  0     ~    0  0  0  0  0  0  9  --  48
+Received: CHANGE;7;0,0,0,0,0,0,0,47,0,0,0,0,0,0,0,51;END
+
+A state.
+This was the move: 7
+Is the game over? true
+The board as we got it:
+47  --  0  0  0  0  0  0  0     ~    0  0  0  0  0  0  0  --  51
+The board as we think:
+47  --  0  0  0  0  0  0  0     ~    0  0  0  0  0  0  0  --  51
+Received: END
+
+An end. Bye bye!
