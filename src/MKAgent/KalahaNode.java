@@ -3,7 +3,7 @@ package MKAgent;
 import java.util.*;
 
 
-public class  KalahaNode {
+public class  KalahaNode implements Comparable<KalahaNode> {
 
     private final Board board;
 
@@ -118,7 +118,18 @@ public class  KalahaNode {
     }
     */
 
-    public Map<Integer,KalahaNode> generateChildren(){
+    public List<KalahaNode> getChildrenSorted(){
+        Map<Integer, KalahaNode> childrenMap = generateChildren();
+
+        List<KalahaNode> children = new ArrayList<KalahaNode>(childrenMap.size());
+
+        children.addAll(childrenMap.values());
+        Collections.sort(children);
+
+        return children;
+    }
+
+    public Map<Integer, KalahaNode> generateChildren(){
         List<Integer> validHoles = board.getValidHoles(side);
 
         Map<Integer,KalahaNode> moves = new HashMap<Integer,KalahaNode>(validHoles.size());
@@ -179,5 +190,11 @@ public class  KalahaNode {
         int result = board.hashCode();
         result = 31 * result + side.hashCode();
         return result;
+    }
+
+    @Override
+    public int compareTo(KalahaNode kalahaNode) {
+        //todo instance variable for the score instead
+        return Heuristics.getScore(this) > Heuristics.getScore(kalahaNode) ? -1 : 1;
     }
 }

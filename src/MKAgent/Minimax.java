@@ -57,7 +57,7 @@ public class Minimax {
             g = Integer.MIN_VALUE;
             int a = alpha;
 
-            for (KalahaNode child: node.generateChildren().values()){
+            for (KalahaNode child: node.getChildrenSorted()){
                 g = Math.max(g, alphabeta(child, depth -1, a, beta));
                 a = Math.max(a, g);
                 if (g >= beta) {
@@ -68,7 +68,7 @@ public class Minimax {
         else {
             g = Integer.MAX_VALUE;
             int b = beta;
-            for (KalahaNode child: node.generateChildren().values()){
+            for (KalahaNode child: node.getChildrenSorted()){
                 g = Math.min(g, alphabeta(child, depth - 1, alpha, b));
                 alpha = Math.min(b, g);
                 if (g <= alpha) {
