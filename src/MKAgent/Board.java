@@ -138,10 +138,12 @@ public class Board extends Observable implements Cloneable
     }
 
 	public List<Integer> getValidHoles(Side side){
-		List<Integer> validHoles = new ArrayList<Integer>(7);
+		List<Integer> validHoles = new ArrayList<Integer>(this.getNoOfHoles());
 
-		for(int i=1; i <= 7; i++){
-			if(getSeeds(side, i) > 0){
+		int sideIndex = indexOfSide(side);
+
+		for(int i=1; i <= this.getNoOfHoles(); i++){
+			if(this.board[sideIndex][i] > 0){
 				validHoles.add(i);
 			}
 		}
@@ -283,6 +285,16 @@ public class Board extends Observable implements Cloneable
     	board[indexOfSide(side)][0] += seeds;
     	this.setChanged();
     }
+
+	public int getSeedsOnSide(Side side){
+		int total = 0;
+
+		for(int i = 1; i <= getNoOfHoles(); i++){
+			total += getSeeds(side, i);
+		}
+
+		return total;
+	}
 
 	@Override
 	public String toString()

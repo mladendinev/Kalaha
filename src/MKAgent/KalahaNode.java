@@ -7,11 +7,10 @@ public class  KalahaNode {
 
     private final Board board;
 
-    public void setSide(Side side) {
-        this.side = side;
-    }
+    private int score = 0;
 
     private Side side;
+
     //private Map<Integer, KalahaNode> children;
 
     //public int upperBound = Integer.MAX_VALUE;
@@ -20,25 +19,48 @@ public class  KalahaNode {
     //private int payoff;
 
     public int getBestMove(){
-        int bestIndex = -1;
-        int bestValue = Integer.MIN_VALUE;
 
         System.err.println("Getting best move from: ");
 
-        for(Map.Entry<Integer, KalahaNode> e : generateChildren().entrySet()){
+        Map<Integer, KalahaNode> childrenMap = generateChildren();
+        List<Thread> searchThreads = new ArrayList<Thread>(childrenMap.size());
+
+        for(Map.Entry<Integer, KalahaNode> e : childrenMap.entrySet()){
             KalahaNode child = e.getValue();
 
-            //int childValue = Minimax.alphabeta(child, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            searchThreads.add(new SearchThread(child));
+        }
 
-            int childValue = MemoryTestDriver.IterativeDeepening(child, 3);
+        for(Thread t : searchThreads){
+            t.start();
+        }
 
-            System.err.println("-> " + childValue);
+        for(Thread t : searchThreads){
+            try {
+                t.join();
+            }
+            catch(InterruptedException e){
+                System.err.println(e.getMessage());
+            }
+        }
 
-            if(childValue > bestValue){
-                bestValue = childValue;
+        int bestIndex = -1;
+        int bestValue = Integer.MIN_VALUE;
+
+        for(Map.Entry<Integer, KalahaNode> e : childrenMap.entrySet()){
+            KalahaNode child = e.getValue();
+
+            double score = child.getScore();
+            System.err.println("-> " + score);
+
+            if(score > bestValue){
+                bestValue = child.getScore();
                 bestIndex = e.getKey();
             }
         }
+
+        System.err.println("best value is MOVE;" + bestIndex + " with value: " + bestValue);
+
 
         return bestIndex;
     }
@@ -46,7 +68,7 @@ public class  KalahaNode {
     public KalahaNode(Board board, Side side) {
         this.board      = board;
         this.side       = side;
-       // this.children   = null;
+        // this.children   = null;
         //this.payoff = 0;
     }
 
@@ -108,7 +130,7 @@ public class  KalahaNode {
         return moves;
     }
 
-    private KalahaNode generateChild(int i){
+    public KalahaNode generateChild(int i){
         Board childBoard = new Board(board);
         Move move = new Move(side, i);
         Side childSide = Kalah.makeMove(childBoard,move);
@@ -128,6 +150,18 @@ public class  KalahaNode {
     public KalahaNode getChild(int i){
         return children.get(i);
     }*/
+
+    public int getScore() {
+        return score;
+    }
+
+    public synchronized void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setSide(Side side) {
+        this.side = side;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -28,6 +28,9 @@ public class Main
 	 */
 	public static void sendMsg (String msg)
 	{
+		System.err.println("Sending**** " + msg);
+		//System.err.println("SENT AT: " + System.currentTimeMillis());
+
 		System.out.println(msg);
 		//System.out.flush();
 	}
@@ -51,6 +54,7 @@ public class Main
 			message.append((char)newCharacter);
 		} while((char)newCharacter != '\n');
 
+		//System.err.println("RECEIVED AT: " + System.currentTimeMillis());
 		return message.toString();
 	}
 
@@ -83,6 +87,8 @@ public class Main
 			KalahaNode root = new KalahaNode(board, Side.SOUTH); //South always starts
 			//root.createChildren(DEPTH);
 
+			boolean canSwap = true;
+
 			String s;
 			while (true)
 			{
@@ -99,8 +105,11 @@ public class Main
 
 							Side.mySide = first ? Side.SOUTH : Side.NORTH;
 
-							//System.err.println("MEM ROOT " + MemoryTestDriver.IterativeDeepening(root, 4));
-							sendMsg("MOVE;" + 6);
+							if(first){
+								canSwap = false;
+								//sendMsg(Protocol.move(root.getBestMove()));
+								sendMsg(Protocol.move(2));
+							}
 							break;
 						case STATE: System.err.println("A state.");
 							Protocol.MoveTurn r = Protocol.interpretStateMsg (s, board);
@@ -109,22 +118,32 @@ public class Main
 							if (!r.end) System.err.println("Is it our turn again? " + r.again);
 							System.err.print("The board as we got it:\n" + board);
 
-							if(r.move == -1){ //SWAP
+							if(canSwap && r.move <= 2){
+								sendMsg(Protocol.swap());
 								Side.mySide = Side.mySide.opposite();
-							}
-							else {
-								//root = root.getChild(r.move);
-								//root.addNewLayer();
-								System.err.print("The board as we think:\n" + root.getBoard());
-							}
-
-							if (r.again) {
 								root.setSide(Side.mySide);
-								sendMsg("MOVE;" + root.getBestMove());
 							}
 							else{
-								root.setSide(Side.mySide.opposite());
+								if(r.move == -1){ //SWAP
+									Side.mySide = Side.mySide.opposite();
+								}
+
+								//root = root.getChild(r.move);
+								//root.addNewLayer();
+								//root = root.generateChild(r.move);
+								System.err.print("The board as we think:\n" + root.getBoard());
+
+								if (r.again) {
+									root.setSide(Side.mySide);
+									sendMsg(Protocol.move(root.getBestMove()));
+								}
+								else{
+									root.setSide(Side.mySide.opposite());
+								}
 							}
+
+							canSwap = false;
+
 
 							break;
 						case END: System.err.println("An end. Bye bye!"); return;

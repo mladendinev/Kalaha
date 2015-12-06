@@ -6,10 +6,11 @@ package MKAgent;
 public class MemoryTestDriver {
 
     public static int IterativeDeepening(KalahaNode root, int d){
-        int firstGuess = 0;
+        int firstGuess = root.getEvaluationFunction();
 
-        for(int i = 0; i < d; i++){
-            firstGuess = MTDf(root, firstGuess, d);
+        //for(int i = 1; i < d; i+=3) {+
+        for(int i = 1; i < d; i++) {
+            firstGuess = MTDf(root, firstGuess, i);
         }
 
         return firstGuess;
@@ -20,8 +21,8 @@ public class MemoryTestDriver {
         int upperBound = Integer.MAX_VALUE;
         int lowerBound = Integer.MIN_VALUE;
 
+        int beta;
         while(lowerBound < upperBound){
-            int beta;
 
             if(g == lowerBound){
                 beta = g+1;
@@ -30,7 +31,7 @@ public class MemoryTestDriver {
                 beta = g;
             }
 
-            g = Minimax.alphabeta(root,  d, beta -1, beta);
+            g = Minimax.alphabeta(root,  d, beta-1, beta);
 
             if(g < beta){
                 upperBound = g;

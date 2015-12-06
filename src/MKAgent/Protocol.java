@@ -177,5 +177,14 @@ public class Protocol
 
     	return moveTurn;
     }
+
+
+	public static String swap(){
+		return "SWAP";
+	}
+
+	public static String move(int i){
+		return "MOVE;" + i;
+	}
 }
 

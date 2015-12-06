@@ -1,10 +1,7 @@
 package MKAgent;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
-
 /**
  * Created by mbax2md2 on 03/12/15.
  */
@@ -17,14 +14,17 @@ public class Minimax {
         public TableEntry(){}
     }
 
-    public static Map<KalahaNode, TableEntry> transpositionalTable = new HashMap<KalahaNode, TableEntry>();
+    public static final Map<KalahaNode, TableEntry> transpositionalTable = new HashMap<KalahaNode, TableEntry>();
 
     public static int alphabeta(KalahaNode node, int depth, int alpha, int beta) {
 
-        TableEntry te = transpositionalTable.get(node);
+        TableEntry te;
+        synchronized (transpositionalTable){
+            te = transpositionalTable.get(node);
+        }
 
         if(te != null){
-            //System.err.println("Table hit!");
+            //System.err.println("H");
             if(te.lowerBound >= beta){
                 return te.lowerBound;
             }
@@ -33,33 +33,45 @@ public class Minimax {
             }
             alpha = Math.max(alpha, te.lowerBound);
             beta = Math.min(beta, te.upperBound);
-        }/*
+        }
         else{
-            System.err.println("Table miss");
-        }*/
-
-        if (depth == 0){ //|| node.getChildren()
-            return Heuristics.monteCarlo(node, 20);
+            //System.err.println("-");
         }
 
-        int value;
+        if (depth == 0){
+            //return Heuristics.monteCarlo(node, 50);
+            //return Heuristics.getScore(node);
+            return node.getEvaluationFunction();
+
+            //return node.getBoard().getSeedsInStore(Side.mySide) - 50;
+        }
+
+        if(Kalah.gameOver(node.getBoard())){
+            return node.getEvaluationFunction();
+            //return Heuristics.getScore(node);
+        }
+
+        int g;
 
         if (Side.myTurn(node.getSide())) {
-            value = Integer.MIN_VALUE;
+            g = Integer.MIN_VALUE;
+            int a = alpha;
+
             for (KalahaNode child: node.generateChildren().values()){
-                value = Math.max(value, alphabeta(child,depth -1, alpha, beta));
-                alpha = Math.max(alpha, value);
-                if (beta <= alpha) {
+                g = Math.max(g, alphabeta(child, depth -1, a, beta));
+                a = Math.max(a, g);
+                if (g >= beta) {
                     break;
                 }
             }
         }
         else {
-            value = Integer.MAX_VALUE;
+            g = Integer.MAX_VALUE;
+            int b = beta;
             for (KalahaNode child: node.generateChildren().values()){
-                value = Math.min(value, alphabeta(child, depth - 1, alpha, beta));
-                alpha = Math.min(beta, value);
-                if (beta <= alpha) {
+                g = Math.min(g, alphabeta(child, depth - 1, alpha, b));
+                alpha = Math.min(b, g);
+                if (g <= alpha) {
                     break;
                 }
             }
@@ -67,19 +79,21 @@ public class Minimax {
 
         if(te == null){
             te = new TableEntry();
-            transpositionalTable.put(node, te);
+            synchronized (transpositionalTable){
+                transpositionalTable.put(node, te);
+            }
         }
 
-        if(value <= alpha){
-            te.upperBound = value;
+        if(g <= alpha){
+            te.upperBound = g;
         }
-        else if(value > alpha && value < beta){
-            te.lowerBound = value;
-            te.upperBound = value;
-        } else if (value >= beta) {
-            te.lowerBound = value;
+        else if(g > alpha && g < beta){
+            te.lowerBound = g;
+            te.upperBound = g;
+        } else if (g >= beta) {
+            te.lowerBound = g;
         }
 
-        return value;
+        return g;
     }
 }
