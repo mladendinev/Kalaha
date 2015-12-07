@@ -1,7 +1,7 @@
-package MKAgent;
+package Kalah404;
 
 /**
- * Represents a move (not a turn) in the MKAgent.Kalah game.
+ * Represents a move (not a turn) in the Kalah404.Kalah game.
  */
 public class Move
 {

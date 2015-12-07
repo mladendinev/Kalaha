@@ -1,7 +1,7 @@
-package MKAgent;
+package Kalah404;
 
 /**
- * The side of the MKAgent.Kalah board a player can choose.
+ * The side of the Kalah404.Kalah board a player can choose.
  */
 public enum Side
 {
@@ -20,7 +20,7 @@ public enum Side
 		}
 	}
 
-	public static Side mySide;
+	public static Side mySide = Side.SOUTH;
 
 	public static boolean myTurn(Side s){
 		return s == mySide;

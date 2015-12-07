@@ -1,11 +1,11 @@
-package MKAgent;
+package Kalah404;
 
 /**
  * Created by gmtuca on 04/12/15.
  */
 public class MemoryTestDriver {
 
-    public static int IterativeDeepening(KalahaNode root, int d){
+    public static int IterativeDeepening(Node root, int d){
         int firstGuess = root.getEvaluationFunction();
 
         //for(int i = 1; i < d; i+=3) {+
@@ -16,7 +16,7 @@ public class MemoryTestDriver {
         return firstGuess;
     }
 
-    public static int MTDf(KalahaNode root, int f, int d){
+    public static int MTDf(Node root, int f, int d){
         int g = f;
         int upperBound = Integer.MAX_VALUE;
         int lowerBound = Integer.MIN_VALUE;

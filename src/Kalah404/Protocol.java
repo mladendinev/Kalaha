@@ -1,10 +1,12 @@
-package MKAgent;
+package Kalah404;
 
 /**
  * Creates messages to be sent and interprets messages received.
  */
 public class Protocol
 {
+	public static final int SWAP = -1;
+
 	/**
 	 * An object of this type is returned by interpretStateMsg().
 	 * @see Protocol#interpretStateMsg(String, Board)
@@ -33,18 +35,18 @@ public class Protocol
      * @param hole The hole to pick the seeds from.
 	 * @return The message as a string.
      */
-    public static String createMoveMsg (int hole)
+    public static String move (int hole)
     {
-		return "MOVE;" + hole + "\n";
+		return "MOVE;" + hole;
     }
 
     /**
      * Creates a "swap" message.
 	 * @return The message as a string.
      */
-    public static String createSwapMsg ()
+    public static String swap ()
     {
-		return "SWAP\n";
+		return "SWAP";
     }
 
     /**
@@ -69,7 +71,7 @@ public class Protocol
 
     /**
      * Interprets a "new_match" message. Should be called if
-     * getMessageType(msg) returns MKAgent.MsgType.START
+     * getMessageType(msg) returns Kalah404.MsgType.START
      * @param msg The message.
      * @return "true" if this agent is the starting player (South), "false"
      *         otherwise.
@@ -92,11 +94,11 @@ public class Protocol
 
     /**
      * Interprets a "state_change" message. Should be called if
-     * getMessageType(msg) returns MKAgent.MsgType.STATE
+     * getMessageType(msg) returns Kalah404.MsgType.STATE
      * @param msg The message.
      * @param board This is an output parameter. It will store the new state
-     *        of the MKAgent.Kalah board. The board has to have the right dimensions
-     *        (number of holes), otherwise an MKAgent.InvalidMessageException is
+     *        of the Kalah404.Kalah board. The board has to have the right dimensions
+     *        (number of holes), otherwise an Kalah404.InvalidMessageException is
      *        thrown.
      * @return information about the move that led to the state change and
      *         who's turn it is next.
@@ -134,9 +136,9 @@ public class Protocol
     	// 2nd argument: the board
     	String[] boardParts = msgParts[2].split(",", -1);
     	/*if (boardParts.length % 2 != 0)
-    		throw new MKAgent.InvalidMessageException("Malformed board: odd number of entries.");*/
+    		throw new Kalah404.InvalidMessageException("Malformed board: odd number of entries.");*/
     	if (2*(board.getNoOfHoles()+1) != boardParts.length)
-    		throw new InvalidMessageException("MKAgent.Board dimensions in message ("
+    		throw new InvalidMessageException("Kalah404.Board dimensions in message ("
     				+ boardParts.length + " entries) are not as expected ("
     				+ 2*(board.getNoOfHoles()+1) + " entries).");
     	try
@@ -177,14 +179,5 @@ public class Protocol
 
     	return moveTurn;
     }
-
-
-	public static String swap(){
-		return "SWAP";
-	}
-
-	public static String move(int i){
-		return "MOVE;" + i;
-	}
 }
 

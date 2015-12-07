@@ -1,13 +1,13 @@
-package MKAgent;
+package Kalah404;
 
 /**
  * Created by gmtuca on 04/12/15.
  */
 public class SearchThread extends Thread {
 
-    private final KalahaNode node;
+    private final Node node;
 
-    public SearchThread(KalahaNode node){
+    public SearchThread(Node node){
         this.node = node;
     }
 
@@ -21,7 +21,12 @@ public class SearchThread extends Thread {
         //another core for this?
         //score += Heuristics.monteCarlo(node, 2000);
 
-        node.setScore(score);
+        synchronized (node){
+            double monteCarloScore = node.getScore(); //previous montecarlo score
+            System.err.println("PREV MONTECARLO SCORE: " + monteCarloScore);
+            node.setScore(score + (int)(monteCarloScore/2.0));
+        }
+
         //System.err.println("THREAD RETURNING > " + node.getScore());
     }
 }

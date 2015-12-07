@@ -1,4 +1,4 @@
-package MKAgent;
+package Kalah404;
 
 import java.io.BufferedReader;
 import java.io.EOFException;
@@ -8,6 +8,9 @@ import java.io.Reader;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The main application class. It also provides methods for communication
@@ -15,8 +18,6 @@ import java.io.PrintStream;
  */
 public class Main
 {
-	public static final int DEPTH = 1;
-
 	/**
 	 * Input from the game engine.
 	 */
@@ -28,11 +29,7 @@ public class Main
 	 */
 	public static void sendMsg (String msg)
 	{
-		System.err.println("Sending**** " + msg);
-		//System.err.println("SENT AT: " + System.currentTimeMillis());
-
 		System.out.println(msg);
-		//System.out.flush();
 	}
 
 	/**
@@ -79,20 +76,24 @@ public class Main
 	 */
 	public static void main(String[] args)
 	{
-		redirectSystemErr();
+		//redirectSystemErr();
 
 		try {
 			Board board = new Board(7,7);
 
-			KalahaNode root = new KalahaNode(board, Side.SOUTH); //South always starts
-			//root.createChildren(DEPTH);
+			Node root = new Node(new Board(board), Side.SOUTH); // South always starts
+			root.addNewLayer();
+
+			List<MonteCarloThread> monteCarloThreads = new ArrayList<MonteCarloThread>(49);
 
 			boolean canSwap = true;
+
+			int depth = 0;
 
 			String s;
 			while (true)
 			{
-				s = recvMsg(); //todo Thread while waiting for response
+				s = recvMsg();
 				System.err.println("Received: " + s);
 
 				try {
@@ -107,11 +108,28 @@ public class Main
 
 							if(first){
 								canSwap = false;
-								//sendMsg(Protocol.move(root.getBestMove()));
 								sendMsg(Protocol.move(2));
 							}
 							break;
 						case STATE: System.err.println("A state.");
+
+							if(depth > 999) { //minimax while waiting instead???
+								for(MonteCarloThread t : monteCarloThreads){
+									t.requestStop();
+									//t.interrupt();
+								}
+
+/*								for (MonteCarloThread t : monteCarloThreads) {
+									try {
+										t.join();
+									} catch (InterruptedException e) {
+										System.err.println("Interrupted!!!");
+									}
+								}*/
+
+								monteCarloThreads.clear();
+							}
+
 							Protocol.MoveTurn r = Protocol.interpretStateMsg (s, board);
 							System.err.println("This was the move: " + r.move);
 							System.err.println("Is the game over? " + r.end);
@@ -119,36 +137,66 @@ public class Main
 							System.err.print("The board as we got it:\n" + board);
 
 							if(canSwap && r.move <= 2){
-								sendMsg(Protocol.swap());
 								Side.mySide = Side.mySide.opposite();
-								root.setSide(Side.mySide);
+
+								root = root.getChild(r.move);
+								if(r.move == 1){
+									root.setSide(Side.mySide.opposite());
+								}
+								root.addNewLayer();
+
+								sendMsg(Protocol.swap());
 							}
 							else{
-								if(r.move == -1){ //SWAP
+								if(r.move == Protocol.SWAP){
 									Side.mySide = Side.mySide.opposite();
 								}
+								else{
+									depth++;
 
-								//root = root.getChild(r.move);
-								//root.addNewLayer();
-								//root = root.generateChild(r.move);
-								System.err.print("The board as we think:\n" + root.getBoard());
+									root = root.getChild(r.move);
+									root.addNewLayer();
+								}
 
 								if (r.again) {
-									root.setSide(Side.mySide);
-									sendMsg(Protocol.move(root.getBestMove()));
+									int bestMove = root.getBestMove();
+									sendMsg(Protocol.move(bestMove));
 								}
 								else{
-									root.setSide(Side.mySide.opposite());
+									// opponent's turn
+
+									if(depth > 999) {
+										List<Node> nextMoves = root.getChildrenSorted();
+										Collections.reverse(nextMoves);
+
+										int j = 0;
+
+										for (Node nextMove : nextMoves) {
+											if(++j == 3){
+												break;
+											}
+											List<Node> nextNextMoves = nextMove.getChildrenSorted();
+
+											int u = 0;
+											for (Node node : nextNextMoves) {
+												if(++u == 3){
+													break;
+												}
+												monteCarloThreads.add(new MonteCarloThread(node));
+											}
+										}
+
+										for (MonteCarloThread t : monteCarloThreads) {
+											t.start();
+										}
+									}
 								}
 							}
 
 							canSwap = false;
-
-
 							break;
 						case END: System.err.println("An end. Bye bye!"); return;
 					}
-
 				} catch (InvalidMessageException e) {
 					System.err.println(e.getMessage());
 				}

@@ -1,2 +1,2 @@
-rm MKAgent.jar
-javac MKAgent/*.java && jar cvfe MKAgent.jar MKAgent.Main MKAgent/*.class
+rm Kalah404.jar
+javac Kalah404/*.java && jar cvfe Kalah404.jar Kalah404.Main Kalah404/*.class

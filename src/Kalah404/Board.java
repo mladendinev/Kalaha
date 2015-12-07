@@ -1,4 +1,4 @@
-package MKAgent;
+package Kalah404;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Observable;
 
 /**
- * Representation of the MKAgent.Kalah board.<BR><BR>
+ * Representation of the Kalah404.Kalah board.<BR><BR>
  * The board has two sides: "North" and
  * "South". On each side there is a number of linearly arranged "holes" (the
  * same number on each side) and a "store" for each side. Holes are numbered
@@ -304,8 +304,7 @@ public class Board extends Observable implements Cloneable
 		boardString.append(board[NORTH_ROW][0] + "  --");
 		for (int i=holes; i >= 1; i--)
 			boardString.append("  " + board[NORTH_ROW][i]);
-		//boardString.append("\n");
-		boardString.append("     ~    ");
+		boardString.append("\n");
 		for (int i=1; i <= holes; i++)
 			boardString.append(board[SOUTH_ROW][i] + "  ");
 		boardString.append("--  " + board[SOUTH_ROW][0] + "\n");

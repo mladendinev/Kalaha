@@ -1,7 +1,7 @@
-package MKAgent;
+package Kalah404;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
 /**
  * Created by mbax2md2 on 03/12/15.
  */
@@ -14,9 +14,9 @@ public class Minimax {
         public TableEntry(){}
     }
 
-    public static final Map<KalahaNode, TableEntry> transpositionalTable = new HashMap<KalahaNode, TableEntry>();
+    public static final Map<Node, TableEntry> transpositionalTable = new HashMap<Node, TableEntry>();
 
-    public static int alphabeta(KalahaNode node, int depth, int alpha, int beta) {
+    public static int alphabeta(Node node, int depth, int alpha, int beta) {
 
         TableEntry te;
         synchronized (transpositionalTable){
@@ -38,17 +38,8 @@ public class Minimax {
             //System.err.println("-");
         }
 
-        if (depth == 0){
-            //return Heuristics.monteCarlo(node, 50);
-            //return Heuristics.getScore(node);
+        if (depth == 0 || Kalah.gameOver(node.getBoard())){
             return node.getEvaluationFunction();
-
-            //return node.getBoard().getSeedsInStore(Side.mySide) - 50;
-        }
-
-        if(Kalah.gameOver(node.getBoard())){
-            return node.getEvaluationFunction();
-            //return Heuristics.getScore(node);
         }
 
         int g;
@@ -57,7 +48,7 @@ public class Minimax {
             g = Integer.MIN_VALUE;
             int a = alpha;
 
-            for (KalahaNode child: node.getChildrenSorted()){
+            for (Node child: node.getChildrenSorted()){
                 g = Math.max(g, alphabeta(child, depth -1, a, beta));
                 a = Math.max(a, g);
                 if (g >= beta) {
@@ -68,7 +59,9 @@ public class Minimax {
         else {
             g = Integer.MAX_VALUE;
             int b = beta;
-            for (KalahaNode child: node.getChildrenSorted()){
+            List<Node> sortedChildren = node.getChildrenSorted();
+            //Collections.reverse(sortedChildren);
+            for (Node child: sortedChildren){
                 g = Math.min(g, alphabeta(child, depth - 1, alpha, b));
                 alpha = Math.min(b, g);
                 if (g <= alpha) {

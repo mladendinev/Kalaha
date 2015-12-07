@@ -1,4 +1,4 @@
-package MKAgent;
+package Kalah404;
 
 /**
  * Thrown to indicate that a message is invalid according to the protocol.
