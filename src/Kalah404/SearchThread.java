@@ -15,16 +15,18 @@ public class SearchThread extends Thread {
     public void run() {
         //int score = 0;
         int score = MemoryTestDriver.IterativeDeepening(node, 30);
+
+        //int score = Minimax.alphabeta(node, 10, Integer.MIN_VALUE, Integer.MAX_VALUE);
         //int score =;
         //score += node.getScore();
 
         //another core for this?
-        //score += Heuristics.monteCarlo(node, 2000);
+        //score += Heuristics.monteCarlo(node, 100);
 
         synchronized (node){
-            double monteCarloScore = node.getScore(); //previous montecarlo score
-            System.err.println("PREV MONTECARLO SCORE: " + monteCarloScore);
-            node.setScore(score + (int)(monteCarloScore/2.0));
+            //double monteCarloScore = node.getScore(); //previous montecarlo score
+            //System.err.println("PREV MONTECARLO SCORE: " + monteCarloScore);
+            node.setScore(score);
         }
 
         //System.err.println("THREAD RETURNING > " + node.getScore());

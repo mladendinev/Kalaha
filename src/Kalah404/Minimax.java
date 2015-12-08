@@ -1,9 +1,10 @@
-package MKAgent;
+package Kalah404;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 /**
  * Created by mbax2md2 on 03/12/15.
  */
@@ -16,9 +17,9 @@ public class Minimax {
         public TableEntry(){}
     }
 
-    public static final Map<KalahaNode, TableEntry> transpositionalTable = new HashMap<KalahaNode, TableEntry>();
+    public static final Map<Node, TableEntry> transpositionalTable = new HashMap<Node, TableEntry>();
 
-    public static int alphabeta(KalahaNode node, int depth, int alpha, int beta) {
+    public static int alphabeta(Node node, int depth, int alpha, int beta) {
 
         TableEntry te;
         synchronized (transpositionalTable){
@@ -42,15 +43,15 @@ public class Minimax {
 
         if (depth == 0){
             //return Heuristics.monteCarlo(node, 50);
-            return Heuristics.getScore(node);
-            //return node.getEvaluationFunction();
+            //return (int)Heuristics.getScore(node);
+            return node.getEvaluationFunction();
 
             //return node.getBoard().getSeedsInStore(Side.mySide) - 50;
         }
 
         if(Kalah.gameOver(node.getBoard())){
-            //return node.getEvaluationFunction();
-            return Heuristics.getScore(node);
+            return node.getEvaluationFunction();
+            //return (int)Heuristics.getScore(node);
         }
 
         int g;
@@ -59,7 +60,7 @@ public class Minimax {
             g = Integer.MIN_VALUE;
             int a = alpha;
 
-            for (KalahaNode child: node.getChildrenSorted()){
+            for (Node child: node.getChildrenSorted()){
                 g = Math.max(g, alphabeta(child, depth -1, a, beta));
                 a = Math.max(a, g);
                 if (g >= beta) {
@@ -70,9 +71,9 @@ public class Minimax {
         else {
             g = Integer.MAX_VALUE;
             int b = beta;
-            List<KalahaNode> children = node.getChildrenSorted();
+            List<Node> children = node.getChildrenSorted();
             Collections.sort(children, Collections.reverseOrder());
-            for (KalahaNode child: children){
+            for (Node child: children){
                 g = Math.min(g, alphabeta(child, depth - 1, alpha, b));
                 alpha = Math.min(b, g);
                 if (g <= alpha) {

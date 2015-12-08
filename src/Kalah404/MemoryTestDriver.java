@@ -5,12 +5,12 @@ package Kalah404;
  */
 public class MemoryTestDriver {
 
-    public static int IterativeDeepening(Node root, int d){
-        int firstGuess = root.getEvaluationFunction();
+    public static int IterativeDeepening(Node node, int d){
+        int firstGuess = node.getEvaluationFunction();
 
         //for(int i = 1; i < d; i+=3) {+
         for(int i = 1; i < d; i++) {
-            firstGuess = MTDf(root, firstGuess, i);
+            firstGuess = MTDf(node, firstGuess, i);
         }
 
         return firstGuess;

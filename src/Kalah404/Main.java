@@ -76,7 +76,7 @@ public class Main
 	 */
 	public static void main(String[] args)
 	{
-		//redirectSystemErr();
+		redirectSystemErr();
 
 		try {
 			Board board = new Board(7,7);
@@ -119,7 +119,8 @@ public class Main
 									//t.interrupt();
 								}
 
-/*								for (MonteCarloThread t : monteCarloThreads) {
+								/*
+								for (MonteCarloThread t : monteCarloThreads) {
 									try {
 										t.join();
 									} catch (InterruptedException e) {

@@ -16,12 +16,10 @@ public class Node implements Comparable<Node> {
 
         System.err.println("Getting best move from: ");
 
-        Map<Integer, Node> childrenMap = getChildren();
-        List<Thread> searchThreads = new ArrayList<Thread>(childrenMap.size());
+        List<Node> childrenSorted = getChildrenSorted();
+        List<Thread> searchThreads = new ArrayList<Thread>(childrenSorted.size());
 
-        for(Map.Entry<Integer, Node> e : childrenMap.entrySet()){
-            Node child = e.getValue();
-
+        for(Node child : childrenSorted){
             searchThreads.add(new SearchThread(child));
         }
 
@@ -35,14 +33,14 @@ public class Node implements Comparable<Node> {
             }
             catch(InterruptedException e){
                 System.err.println(e.getMessage());
+                break;
             }
         }
 
         int bestIndex = -1;
         int bestValue = Integer.MIN_VALUE;
 
-        for(Map.Entry<Integer, Node> e : childrenMap.entrySet()){
-            Node child = e.getValue();
+        for(Node child : childrenSorted){
 
             int score;
             synchronized (child){
@@ -53,7 +51,7 @@ public class Node implements Comparable<Node> {
 
             if(score > bestValue){
                 bestValue = score;
-                bestIndex = e.getKey();
+                bestIndex = getChildIndex(child);
             }
         }
 
@@ -61,6 +59,16 @@ public class Node implements Comparable<Node> {
 
 
         return bestIndex;
+    }
+
+    private int getChildIndex(Node node){
+        for(Map.Entry<Integer, Node> e : children.entrySet()){
+            if(e.getValue().equals(node)){
+                return e.getKey();
+            }
+        }
+
+        return -1;
     }
 
     public Node(Board board, Side side) {

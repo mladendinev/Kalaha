@@ -1,4 +1,4 @@
-package MKAgent;
+package Kalah404;
 
 import java.util.List;
 import java.util.Random;
@@ -10,7 +10,7 @@ public class Heuristics {
 
     static Random random = new Random();
 
-    public static int monteCarlo(KalahaNode node, int timesRun){
+    public static int monteCarlo(Node node, int timesRun){
 
         int average = 0;
 
@@ -23,7 +23,7 @@ public class Heuristics {
         return average;
     }
 
-    private static int monteCarlo(KalahaNode node){
+    public static int monteCarlo(Node node){
 
         Board board = new Board(node.getBoard());
         Side side = node.getSide();
@@ -42,61 +42,69 @@ public class Heuristics {
         return board.getSeedsInStore(Side.mySide) - board.getSeedsInStore(Side.mySide.opposite()); //todo have this outside
     }
 
-    public static int getScore(KalahaNode node) {
-
+    public static double getScore(Node node) {
         Board board = node.getBoard();
         Side side = node.getSide();
+        double score = 0.0D;
+        double mySeedsInKalah = (double)board.getSeedsInStore(side);
+        double opponentSeedsInKalah = (double)board.getSeedsInStore(side.opposite());
 
-        int score = 0;
+        if((mySeedsInKalah != 0.0D || opponentSeedsInKalah != 0.0D) && mySeedsInKalah != opponentSeedsInKalah) {
+            double greaterSeedsInKalah;
+            double smallerSeedsInKalah;
+            if(mySeedsInKalah > opponentSeedsInKalah) {
+                greaterSeedsInKalah = mySeedsInKalah;
+                smallerSeedsInKalah = opponentSeedsInKalah;
+            } else {
+                greaterSeedsInKalah = opponentSeedsInKalah;
+                smallerSeedsInKalah = mySeedsInKalah;
+            }
 
-        int[] heuristics = new int[4];
-        heuristics[0] = node.getEvaluationFunction();
-
-        heuristics[1] = holeCapture(board, side);
-
-        heuristics[2] = canGetExtraTurn(board, side);
-
-        heuristics[3] = howCloseIsMyOpponentToWinning(board, side);
-
-        // {4,0,20} - draw
-        double[] weights = {1.0,1.0,1.0, 0.0};
-
-        for (int index = 0; index < weights.length; index++) {
-            score += (double) (heuristics[index] * weights[index]);
-        }
-
-
-
-        /*int mySeeds = board.getSeedsInStore(Side.mySide);
-        int oppSeeds = board.getSeedsInStore(Side.mySide.opposite());
-
-        int seedsDiff = mySeeds - oppSeeds;
-
-        int captureScore = 0;
-        for(int hole = 1; hole <= board.getNoOfHoles(); hole++) {
-            if(canCapture(board, side, hole)) {
-                captureScore += (board.getSeedsOp(side, hole)) * 3;
+            score = (1.0D / greaterSeedsInKalah * (greaterSeedsInKalah - smallerSeedsInKalah) + 1.0D) * greaterSeedsInKalah;
+            if(opponentSeedsInKalah > mySeedsInKalah) {
+                score *= -1.0D;
             }
         }
 
-        int extraTurnScore = 0;
-        if(canGetExtraTurn(board, side)){
-            extraTurnScore += 4;
+        int i;
+        for(i = 1; i <= board.getNoOfHoles(); ++i) {
+            if(board.getSeeds(side, i) == 0 && isSeedable(board, side, i)) {
+                score += (double)(board.getSeedsOp(side, i) / 2);
+            }
         }
 
-        if(side == Side.mySide.opposite()){
-            captureScore *= -1;
-            extraTurnScore *= -1;
+        for(i = 1; i <= board.getNoOfHoles(); ++i) {
+            if(board.getNoOfHoles() - i + 1 == board.getSeeds(side, i)) {
+                ++score;
+            }
         }
 
-        score += seedsDiff;
-        score += captureScore;
-        score += extraTurnScore;
-        score += (board.getSeedsOnSide(Side.mySide) - board.getSeedsOnSide(Side.mySide.opposite()))/ 3.0;*/
+        i = 0;
 
-        //int monte = monteCarlo(node, 10);
+        int var9;
+        for(var9 = 1; var9 <= board.getNoOfHoles(); ++var9) {
+            i += board.getSeeds(side, var9);
+        }
 
-        //score += monte;
+        var9 = 0;
+
+        int var13;
+        for(var13 = 1; var13 <= board.getNoOfHoles(); ++var13) {
+            var9 += board.getSeeds(side.opposite(), var13);
+        }
+
+        var13 = i - var9;
+        score += (double)(var13 / 2);
+
+        for(int var11 = 1; var11 <= board.getNoOfHoles(); ++var11) {
+            if(board.getSeeds(side.opposite(), var11) == 0 && isSeedable(board, side.opposite(), var11)) {
+                score -= (double)(board.getSeedsOp(side.opposite(), var11) / 2);
+            }
+        }
+
+        if(side != Side.mySide){
+            score *= -1;
+        }
 
         return score;
     }
@@ -107,7 +115,7 @@ public class Heuristics {
 
     public static int canGetExtraTurn(Board board, Side side) {
         int kalahaLocation = 8;
-        for (int hole = 1; hole < 8; hole++) {
+        for (int hole = 1; hole <= 7; hole++) {
             if (board.getSeeds(side, hole) == (kalahaLocation - hole)) {
                 return 1;
             }
@@ -120,7 +128,7 @@ public class Heuristics {
     }*/
 
     public static int holeCapture(Board board, Side side) {
-        for (int index = 1; index < 8; index++) {
+        for (int index = 1; index <= 7; index++) {
             // Check to see if there are any holes which have 0 seeds in them
             if (board.getSeeds(side, index) == 0 ) {
                 // If there are check to see if we can capture there
