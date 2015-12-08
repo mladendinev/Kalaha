@@ -1,15 +1,15 @@
-package MKAgent;
-
 import junit.framework.TestCase;
-
-import MKAgent.Board;
-import MKAgent.Side;
-import MKAgent.Heuristics;
-
+import Kalah404.Board;
+import Kalah404.Side;
+import Kalah404.Heuristics;
 /**
- * Created by mbax2vh2 on 06/12/15.
+ * Created by mbax2vh2 on 07/12/15.
  */
 public class HeuristicsTest extends TestCase {
+
+    public void testGetScore() throws Exception {
+
+    }
 
     public void testCanGetExtraTurn() throws Exception {
 
