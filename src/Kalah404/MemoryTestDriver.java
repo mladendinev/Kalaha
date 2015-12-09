@@ -6,7 +6,7 @@ package Kalah404;
 public class MemoryTestDriver {
 
     public static int IterativeDeepening(Node node, int d){
-        int firstGuess = node.getEvaluationFunction();
+        int firstGuess = 0;
 
         //for(int i = 1; i < d; i+=3) {+
         for(int i = 1; i < d; i++) {
@@ -32,6 +32,8 @@ public class MemoryTestDriver {
             }
 
             g = Minimax.alphabeta(root,  d, beta-1, beta);
+            //System.out.println("Calling alphabeta with depth" + d);
+
 
             if(g < beta){
                 upperBound = g;

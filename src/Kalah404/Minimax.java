@@ -20,14 +20,15 @@ public class Minimax {
     public static final Map<Node, TableEntry> transpositionalTable = new HashMap<Node, TableEntry>();
 
     public static int alphabeta(Node node, int depth, int alpha, int beta) {
-
+        //System.err.println("Performing at depth" + depth);
         TableEntry te;
         synchronized (transpositionalTable){
             te = transpositionalTable.get(node);
         }
 
         if(te != null){
-            //System.err.println("H");
+            System.err.println("Entry exits" + te);
+
             if(te.lowerBound >= beta){
                 return te.lowerBound;
             }
@@ -42,16 +43,13 @@ public class Minimax {
         }
 
         if(Kalah.gameOver(node.getBoard())){
-            return node.getEvaluationFunction();
-            //return (int)Heuristics.getScore(node);
+            //System.err.println("Game over - leaf node");
+            return node.getEvaluationFunction() * 10;
         }
 
         if (depth == 0){
-            //return Heuristics.monteCarlo(node, 50);
-           // return (int)Heuristics.getScore(node);
+            //return (int)Heuristics.getScore(node);
            return node.getEvaluationFunction();
-
-            //return node.getBoard().getSeedsInStore(Side.mySide) - 50;
         }
 
 
@@ -61,7 +59,7 @@ public class Minimax {
         if (Side.myTurn(node.getSide())) {
             g = Integer.MIN_VALUE;
             int a = alpha;
-
+           // System.err.println("Maxnode at depth" + depth);
             for (Node child: node.getChildrenSorted()){
                 g = Math.max(g, alphabeta(child, depth -1, a, beta));
                 a = Math.max(a, g);
@@ -71,10 +69,11 @@ public class Minimax {
             }
         }
         else {
+          //  System.err.println("Minnode at depth" + depth);
             g = Integer.MAX_VALUE;
             int b = beta;
             List<Node> children = node.getChildrenSorted();
-            //Collections.sort(children, Collections.reverseOrder());
+            Collections.sort(children, Collections.reverseOrder());
             for (Node child: children){
                 g = Math.min(g, alphabeta(child, depth - 1, alpha, b));
                 b = Math.min(b, g);

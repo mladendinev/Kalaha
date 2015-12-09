@@ -84,7 +84,6 @@ public class Node implements Comparable<Node> {
 
     public Map<Integer, Node> getChildren() {
         if(children == null){
-            System.err.println("Here");
             children = generateChildren();
         }
         return children;
@@ -180,7 +179,13 @@ public class Node implements Comparable<Node> {
     @Override
     public int compareTo(Node node) {
         //todo instance variable for the score instead
-        return Heuristics.getScore(this) > Heuristics.getScore(node) ? -1 : 1;
+        if (evaluationFunction > node.getEvaluationFunction()) {
+            return -1;
+        }
+        else {
+            return 1;
+        }
+        //return Heuristics.getScore(this) > Heuristics.getScore(node) ? -1 : 1;
     }
 
     @Override

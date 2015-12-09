@@ -115,7 +115,7 @@ public class Main
 							// If it is our turn make a move
 							if(first){
 								canSwap = false;
-								sendMsg(Protocol.move(1));
+								sendMsg(Protocol.move(7));
 							}
 							break;
 						case STATE: System.err.println("A state.");
