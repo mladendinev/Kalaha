@@ -41,18 +41,20 @@ public class Minimax {
             //System.err.println("-");
         }
 
-        if (depth == 0){
-            //return Heuristics.monteCarlo(node, 50);
-            //return (int)Heuristics.getScore(node);
-            return node.getEvaluationFunction();
-
-            //return node.getBoard().getSeedsInStore(Side.mySide) - 50;
-        }
-
         if(Kalah.gameOver(node.getBoard())){
             return node.getEvaluationFunction();
             //return (int)Heuristics.getScore(node);
         }
+
+        if (depth == 0){
+            //return Heuristics.monteCarlo(node, 50);
+           // return (int)Heuristics.getScore(node);
+           return node.getEvaluationFunction();
+
+            //return node.getBoard().getSeedsInStore(Side.mySide) - 50;
+        }
+
+
 
         int g;
 
@@ -72,10 +74,10 @@ public class Minimax {
             g = Integer.MAX_VALUE;
             int b = beta;
             List<Node> children = node.getChildrenSorted();
-            Collections.sort(children, Collections.reverseOrder());
+            //Collections.sort(children, Collections.reverseOrder());
             for (Node child: children){
                 g = Math.min(g, alphabeta(child, depth - 1, alpha, b));
-                alpha = Math.min(b, g);
+                b = Math.min(b, g);
                 if (g <= alpha) {
                     break;
                 }

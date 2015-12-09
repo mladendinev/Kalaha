@@ -81,6 +81,7 @@ public class Main
 		try {
 			Board board = new Board(7,7);
 
+			// Create the root of the tree
 			Node root = new Node(new Board(board), Side.SOUTH); // South always starts
 			root.addNewLayer();
 
@@ -104,32 +105,38 @@ public class Main
 							boolean first = Protocol.interpretStartMsg(s);
 							System.err.println("Starting player? " + first);
 
-							Side.mySide = first ? Side.SOUTH : Side.NORTH;
+							if (first) {
+								Side.mySide = Side.SOUTH;
+							}
+							else {
+								Side.mySide = Side.NORTH;
+							}
 
+							// If it is our turn make a move
 							if(first){
 								canSwap = false;
-								sendMsg(Protocol.move(2));
+								sendMsg(Protocol.move(1));
 							}
 							break;
 						case STATE: System.err.println("A state.");
 
-							if(depth > 999) { //minimax while waiting instead???
+							/*if(depth > 999) { //minimax while waiting instead???
 								for(MonteCarloThread t : monteCarloThreads){
 									t.requestStop();
 									//t.interrupt();
 								}
 
-								/*
+								*//*
 								for (MonteCarloThread t : monteCarloThreads) {
 									try {
 										t.join();
 									} catch (InterruptedException e) {
 										System.err.println("Interrupted!!!");
 									}
-								}*/
+								}*//*
 
 								monteCarloThreads.clear();
-							}
+							}*/
 
 							Protocol.MoveTurn r = Protocol.interpretStateMsg (s, board);
 							System.err.println("This was the move: " + r.move);
@@ -137,7 +144,59 @@ public class Main
 							if (!r.end) System.err.println("Is it our turn again? " + r.again);
 							System.err.print("The board as we got it:\n" + board);
 
-							if(canSwap && r.move <= 2){
+							// If we were the first player and the move was swap we need to change sides
+							// and regenerate the root
+							if (r.again && r.move == Protocol.SWAP) {
+								Side.mySide = Side.mySide.opposite();
+								root = new Node(new Board(board), Side.mySide);
+								root.addNewLayer();
+								int bestMove = root.getBestMove();
+								sendMsg(Protocol.move(bestMove));
+								System.err.print("His turn , swap and board:\n" + root.getBoard());
+							}
+
+							// If it is our turn and we can swap then we should consider swapping
+							else if (r.again && canSwap) {
+								// If we swap change the sides and continue
+								if (r.move <= 2) {
+									Side.mySide = Side.mySide.opposite();
+									// Now it's his move
+									root = new Node(new Board(board), Side.mySide.opposite());
+
+									root.addNewLayer();
+									System.err.println("We are now on side:" + root.getSide());
+									sendMsg(Protocol.swap());
+								}
+								// If we don't swap we need to make a move
+								else {
+									int bestMove = root.getBestMove();
+									sendMsg(Protocol.move(bestMove));
+								}
+								System.err.print("We can swap:\n" + root.getBoard());
+							}
+
+							// If it's my turn
+							else if (r.again) {
+								// We need to record his move
+								root = root.getChild(r.move);
+								root.addNewLayer();
+								System.err.print("Our turn and board:\n" + root.getBoard());
+								int bestMove = root.getBestMove();
+								sendMsg(Protocol.move(bestMove));
+
+							}
+
+							// It was his turn after we made ours
+							else {
+								root = root.getChild(r.move);
+								root.addNewLayer();
+								System.err.print("Board recording turn and board:\n" + root.getBoard());
+							}
+
+							canSwap = false;
+
+
+							/*if(canSwap && r.move <= 2){
 								Side.mySide = Side.mySide.opposite();
 
 								root = root.getChild(r.move);
@@ -147,15 +206,19 @@ public class Main
 								root.addNewLayer();
 
 								sendMsg(Protocol.swap());
-							}
-							else{
+							}*/
+							/*else{
 								if(r.move == Protocol.SWAP){
 									Side.mySide = Side.mySide.opposite();
+
+									//root.refreshChildren();
 								}
 								else{
 									depth++;
 
 									root = root.getChild(r.move);
+
+									System.err.print("The board as we recorded:\n" + root.getBoard());
 									root.addNewLayer();
 								}
 
@@ -166,7 +229,7 @@ public class Main
 								else{
 									// opponent's turn
 
-									if(depth > 999) {
+									*//*if(depth > 999) {
 										List<Node> nextMoves = root.getChildrenSorted();
 										Collections.reverse(nextMoves);
 
@@ -190,11 +253,11 @@ public class Main
 										for (MonteCarloThread t : monteCarloThreads) {
 											t.start();
 										}
-									}
+									}*//*
 								}
-							}
+							}*/
 
-							canSwap = false;
+
 							break;
 						case END: System.err.println("An end. Bye bye!"); return;
 					}

@@ -61,6 +61,10 @@ public class Node implements Comparable<Node> {
         return bestIndex;
     }
 
+    public void refreshChildren(){
+        this.children = generateChildren();
+    }
+
     private int getChildIndex(Node node){
         for(Map.Entry<Integer, Node> e : children.entrySet()){
             if(e.getValue().equals(node)){
@@ -80,6 +84,7 @@ public class Node implements Comparable<Node> {
 
     public Map<Integer, Node> getChildren() {
         if(children == null){
+            System.err.println("Here");
             children = generateChildren();
         }
         return children;
