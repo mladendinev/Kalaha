@@ -1,2 +1,0 @@
-rm MKAgent.jar
-javac MKAgent/*.java && jar cvfe MKAgent.jar MKAgent.Main MKAgent/*.class
