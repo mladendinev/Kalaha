@@ -4,7 +4,7 @@ TOURNAMENT ENGINE
 
 Behavioural & Architectural Requirements:
 
-TREQ1: The engine runs a tournament (of the Kalah game) using the/a provided
+TREQ1: The engine runs a tournament (of the MKAgent.Kalah game) using the/a provided
        game engine application and agent applications. It can start the other
        applications.
 TREQ2: A new instance of an agent is used for each of its matches.

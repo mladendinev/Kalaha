@@ -1,2 +1,0 @@
-java -jar ManKalah.jar "java -jar MKAgent.jar" "java -jar MKRefAgent.jar"
-
