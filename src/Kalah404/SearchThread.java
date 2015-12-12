@@ -14,7 +14,7 @@ public class SearchThread extends Thread {
     @Override
     public void run() {
         //int score = 0;
-        int score = MemoryTestDriver.IterativeDeepening(node, 6);
+        int score = MemoryTestDriver.IterativeDeepening(node, 7);
 
         //int score = Minimax.alphabeta(node, 10, Integer.MIN_VALUE, Integer.MAX_VALUE);
         //int score =;

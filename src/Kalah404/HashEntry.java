@@ -5,20 +5,30 @@ package Kalah404;
  */
 public class HashEntry {
 
-    public long zobrist;
-    public int depth;
-    public int flag;
-    public int eval;
-    public int ancient;
-    public Move move;
+    public enum Flag { EXACT, LOWER, UPPER };
 
-    public HashEntry(long zobrist, int depth, int flag, int eval,
-                     int ancient, Move move){
+
+    public int zobrist;
+    public int depth;
+    public Flag flag;
+    public boolean actualValue;
+    public int score;
+    public int ancient;
+
+//    public HashEntry(int zobrist, int depth, boolean actualValue, int score,
+//                     int ancient){
+//        this.zobrist = zobrist;
+//        this.depth = depth;
+//        this.actualValue = actualValue;
+//        this.score = score;
+//        this.ancient = ancient;
+//    }
+
+    public HashEntry(int zobrist, int depth, int score,int ancient){
         this.zobrist = zobrist;
         this.depth = depth;
-        this.flag = flag;
-        this.eval = eval;
+        this.score = score;
         this.ancient = ancient;
-        this.move = move;
     }
+
 }

@@ -55,7 +55,7 @@ public class Heuristics {
         int numberOfSeedsInHisKalaha = board.getSeedsInStore(side.opposite());
 
 
-        if ( (numberOfSeedsInMyKalaha != 0 || numberOfSeedsInHisKalaha != 0) && numberOfSeedsInHisKalaha != numberOfSeedsInMyKalaha ) {
+        if ((numberOfSeedsInMyKalaha != 0 || numberOfSeedsInHisKalaha != 0) && numberOfSeedsInHisKalaha != numberOfSeedsInMyKalaha ) {
             int winning;
             int losing;
             if(numberOfSeedsInMyKalaha > numberOfSeedsInHisKalaha) {

@@ -17,41 +17,49 @@ public class Minimax {
         public TableEntry(){}
     }
 
-    public static final Map<Node, TableEntry> transpositionalTable = new HashMap<Node, TableEntry>();
+    public static final Map<Board, HashEntry> transpositionalTable = new HashMap<Board, HashEntry>();
+
 
     public static int alphabeta(Node node, int depth, int alpha, int beta) {
-        //System.err.println("Performing at depth" + depth);
-        TableEntry te;
-        synchronized (transpositionalTable){
-            te = transpositionalTable.get(node);
+        System.err.println("Performing at depth" + depth);
+        System.err.println("NODE at depth" + depth);
+
+
+        HashEntry e;
+        synchronized (transpositionalTable) {
+            e = transpositionalTable.get(node);
         }
 
-        if(te != null){
-            System.err.println("Entry exits" + te);
+        if(e != null){
+            if (node.getBoard().hashCode() == e.zobrist) {
+                if (e.depth >= depth) {
 
-            if(te.lowerBound >= beta){
-                return te.lowerBound;
+                    if (e.flag == HashEntry.Flag.LOWER) {
+                        if (e.score >= beta) {
+                            return e.score;
+                        }
+                    } else if (e.flag == HashEntry.Flag.UPPER) {
+                        if (e.score <= alpha) {
+                            return e.score;
+                        }
+                    }
+
+                    alpha = Math.max(alpha, e.score);
+                    beta = Math.min(beta, e.score);
+
+                }
             }
-            if(te.upperBound <= alpha){
-                return te.upperBound;
-            }
-            alpha = Math.max(alpha, te.lowerBound);
-            beta = Math.min(beta, te.upperBound);
-        }
-        else{
-            //System.err.println("-");
         }
 
-        if(Kalah.gameOver(node.getBoard())){
+        if (Kalah.gameOver(node.getBoard())) {
             //System.err.println("Game over - leaf node");
-            return node.getEvaluationFunction() * 10;
+            return node.getEvaluationFunction();
         }
 
-        if (depth == 0){
+        if (depth == 0) {
             //return (int)Heuristics.getScore(node);
-           return node.getEvaluationFunction();
+            return node.getEvaluationFunction();
         }
-
 
 
         int g;
@@ -59,22 +67,21 @@ public class Minimax {
         if (Side.myTurn(node.getSide())) {
             g = Integer.MIN_VALUE;
             int a = alpha;
-           // System.err.println("Maxnode at depth" + depth);
-            for (Node child: node.getChildrenSorted()){
-                g = Math.max(g, alphabeta(child, depth -1, a, beta));
+            // System.err.println("Maxnode at depth" + depth);
+            for (Node child : node.getChildrenSorted()) {
+                g = Math.max(g, alphabeta(child, depth - 1, a, beta));
                 a = Math.max(a, g);
                 if (g >= beta) {
                     break;
                 }
             }
-        }
-        else {
-          //  System.err.println("Minnode at depth" + depth);
+        } else {
+            //  System.err.println("Minnode at depth" + depth);
             g = Integer.MAX_VALUE;
             int b = beta;
             List<Node> children = node.getChildrenSorted();
             Collections.sort(children, Collections.reverseOrder());
-            for (Node child: children){
+            for (Node child : children) {
                 g = Math.min(g, alphabeta(child, depth - 1, alpha, b));
                 b = Math.min(b, g);
                 if (g <= alpha) {
@@ -83,22 +90,23 @@ public class Minimax {
             }
         }
 
-        if(te == null){
-            te = new TableEntry();
-            synchronized (transpositionalTable){
-                transpositionalTable.put(node, te);
+        if (e == null) {
+
+            e = new HashEntry(node.getBoard().hashCode(), depth, g, 10);
+
+            synchronized (transpositionalTable) {
+                transpositionalTable.put(node.getBoard(), e);
+            }
+
+            if (g <= alpha) {
+                e.flag = HashEntry.Flag.UPPER;
+            } else if (g > alpha && g < beta) {
+                e.flag = HashEntry.Flag.EXACT;
+            } else if (g >= beta) {
+                e.flag = HashEntry.Flag.LOWER;
             }
         }
 
-        if(g <= alpha){
-            te.upperBound = g;
-        }
-        else if(g > alpha && g < beta){
-            te.lowerBound = g;
-            te.upperBound = g;
-        } else if (g >= beta) {
-            te.lowerBound = g;
-        }
 
         return g;
     }
