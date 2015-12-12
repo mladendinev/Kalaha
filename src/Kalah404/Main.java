@@ -67,7 +67,6 @@ public class Main
 		catch(Exception e){
 			System.err.println("Exception " + e.getMessage());
 		}
-
 	}
 
 	/**
@@ -83,11 +82,7 @@ public class Main
 			Node root = new Node(new Board(board), Side.SOUTH); // South always starts
 			root.addNewLayer();
 
-			List<MonteCarloThread> monteCarloThreads = new ArrayList<MonteCarloThread>(49);
-
 			boolean canSwap = true;
-
-			int depth = 0;
 
 			String s;
 			while (true)
@@ -119,24 +114,6 @@ public class Main
 							}
 							break;
 						case STATE: System.err.println("A state.");
-
-							/*if(depth > 999) { //minimax while waiting instead???
-								for(MonteCarloThread t : monteCarloThreads){
-									t.requestStop();
-									//t.interrupt();
-								}
-
-								*//*
-								for (MonteCarloThread t : monteCarloThreads) {
-									try {
-										t.join();
-									} catch (InterruptedException e) {
-										System.err.println("Interrupted!!!");
-									}
-								}*//*
-
-								monteCarloThreads.clear();
-							}*/
 
 							Protocol.MoveTurn r = Protocol.interpretStateMsg (s, board);
 							System.err.println("This was the move: " + r.move);
@@ -186,7 +163,6 @@ public class Main
 								System.err.print("Our turn and board:\n" + root.getBoard());
 								int bestMove = root.getBestMove();
 								sendMsg(Protocol.move(bestMove));
-
 							}
 
 							// It was his turn after we made ours
@@ -197,69 +173,6 @@ public class Main
 							}
 
 							canSwap = false;
-
-
-							/*if(canSwap && r.move <= 2){
-								Side.mySide = Side.mySide.opposite();
-
-								root = root.getChild(r.move);
-								if(r.move == 1){
-									root.setSide(Side.mySide.opposite());
-								}
-								root.addNewLayer();
-
-								sendMsg(Protocol.swap());
-							}*/
-							/*else{
-								if(r.move == Protocol.SWAP){
-									Side.mySide = Side.mySide.opposite();
-
-									//root.refreshChildren();
-								}
-								else{
-									depth++;
-
-									root = root.getChild(r.move);
-
-									System.err.print("The board as we recorded:\n" + root.getBoard());
-									root.addNewLayer();
-								}
-
-								if (r.again) {
-									int bestMove = root.getBestMove();
-									sendMsg(Protocol.move(bestMove));
-								}
-								else{
-									// opponent's turn
-
-									*//*if(depth > 999) {
-										List<Node> nextMoves = root.getChildrenSorted();
-										Collections.reverse(nextMoves);
-
-										int j = 0;
-
-										for (Node nextMove : nextMoves) {
-											if(++j == 3){
-												break;
-											}
-											List<Node> nextNextMoves = nextMove.getChildrenSorted();
-
-											int u = 0;
-											for (Node node : nextNextMoves) {
-												if(++u == 3){
-													break;
-												}
-												monteCarloThreads.add(new MonteCarloThread(node));
-											}
-										}
-
-										for (MonteCarloThread t : monteCarloThreads) {
-											t.start();
-										}
-									}*//*
-								}
-							}*/
-
 
 							break;
 						case END: System.err.println("An end. Bye bye!"); return;
