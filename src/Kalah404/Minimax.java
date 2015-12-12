@@ -21,6 +21,7 @@ public class Minimax {
         }
 
         if(e != null){
+
             if (e.depth >= depth) {
                 if (e.flag == HashEntry.Flag.LOWER) {
                     if (e.score >= beta) {
