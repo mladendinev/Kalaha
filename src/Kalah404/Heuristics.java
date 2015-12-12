@@ -8,43 +8,35 @@ import java.util.Random;
  */
 public class Heuristics {
 
-    static Random random = new Random();
-
     private static final int KALAHA_LOCATION = 8;
 
-    public static int monteCarlo(Node node, int timesRun){
+    public static int getScore(Node node) {
 
-        int average = 0;
-
-        for(int i = 0; i < timesRun; i++){
-            average += monteCarlo(node);
-        }
-
-        average /= timesRun;
-
-        return average;
-    }
-
-    public static int monteCarlo(Node node){
-
-        Board board = new Board(node.getBoard());
+        Board board = node.getBoard();
         Side side = node.getSide();
 
-        while(!Kalah.gameOver(board)){
+        int numberOfSeedsInMyKalaha = board.getSeedsInStore(side);
+        int numberOfSeedsInHisKalaha = board.getSeedsInStore(side.opposite());
 
-            List<Integer> validHoles = board.getValidHoles(side);
+        int score = numberOfSeedsInMyKalaha - numberOfSeedsInHisKalaha;
 
-            int randomHole = validHoles.get(random.nextInt(validHoles.size()));
+        int captures = holeCapture(board,side);
 
-            Move move = new Move(side, randomHole);
+        score += captures;
 
-            side = Kalah.makeMove(board, move);
+        int extraTurns = canGetExtraTurn(board, side);
+
+        score += extraTurns;
+
+
+        if (side != Side.mySide) {
+            score *= -1.0D;
         }
 
-        return board.getSeedsInStore(Side.mySide) - board.getSeedsInStore(Side.mySide.opposite()); //todo have this outside
+        return score;
     }
 
-    public static int getScore(Node node) {
+    public static int getScoreTemp(Node node) {
 
         Board board = node.getBoard();
         Side side = node.getSide();

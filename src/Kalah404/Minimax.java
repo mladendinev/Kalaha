@@ -44,8 +44,8 @@ public class Minimax {
         }
 
         if (depth == 0) {
-            //return Heuristics.getScore(node);
-            return node.getEvaluationFunction();
+            return Heuristics.getScore(node);
+            //return node.getEvaluationFunction();
         }
 
         int g;

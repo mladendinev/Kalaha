@@ -1,5 +1,6 @@
 *.class
 *.log
-.idea/
+.idea
 out/*
 Kalaha.iml
+src/Kalaha404.jar
