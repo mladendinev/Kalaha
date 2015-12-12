@@ -8,11 +8,35 @@ import java.util.Random;
  */
 public class Heuristics {
 
-    static Random random = new Random();
-
     private static final int KALAHA_LOCATION = 8;
 
     public static int getScore(Node node) {
+
+        Board board = node.getBoard();
+        Side side = node.getSide();
+
+        int numberOfSeedsInMyKalaha = board.getSeedsInStore(side);
+        int numberOfSeedsInHisKalaha = board.getSeedsInStore(side.opposite());
+
+        int score = numberOfSeedsInMyKalaha - numberOfSeedsInHisKalaha;
+
+        int captures = holeCapture(board,side);
+
+        score += captures;
+
+        int extraTurns = canGetExtraTurn(board, side);
+
+        score += extraTurns;
+
+
+        if (side != Side.mySide) {
+            score *= -1.0D;
+        }
+
+        return score;
+    }
+
+    public static int getScoreTemp(Node node) {
 
         Board board = node.getBoard();
         Side side = node.getSide();
