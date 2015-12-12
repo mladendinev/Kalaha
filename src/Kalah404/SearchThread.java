@@ -6,29 +6,15 @@ package Kalah404;
 public class SearchThread extends Thread {
 
     private final Node node;
+    private final int depth;
 
-    public SearchThread(Node node){
+    public SearchThread(Node node, int depth){
         this.node = node;
+        this.depth = depth;
     }
 
     @Override
     public void run() {
-        //int score = 0;
-        int score = MemoryTestDriver.IterativeDeepening(node, 7);
-
-        //int score = Minimax.alphabeta(node, 10, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        //int score =;
-        //score += node.getScore();
-
-        //another core for this?
-        //score += Heuristics.monteCarlo(node, 100);
-
-        synchronized (node){
-            //double monteCarloScore = node.getScore(); //previous montecarlo score
-            //System.err.println("PREV MONTECARLO SCORE: " + monteCarloScore);
-            node.setScore(score);
-        }
-
-        //System.err.println("THREAD RETURNING > " + node.getScore());
+        node.setScore(MemoryTestDriver.IterativeDeepening(node, depth));
     }
 }

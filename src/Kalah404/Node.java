@@ -9,29 +9,18 @@ public class Node implements Comparable<Node> {
     private Side side;
     public Map<Integer, Node> children;
     private int evaluationFunction = 0;
-
     private int score = Integer.MIN_VALUE;
-
-    public List<Node> getChildrenInHoleOrder(){
-        TreeMap<Integer, Node> treeMap = new TreeMap<Integer, Node>(Collections.reverseOrder());
-
-        treeMap.putAll(children);
-
-        List<Node> childrenInOrder = new ArrayList<Node>();
-        childrenInOrder.addAll(treeMap.values());
-
-        return childrenInOrder;
-    }
+    private int heuristicScore;
 
     public int getBestMove(){
 
-        //System.err.println("Getting best move from: ");
+        System.err.println("Getting best move from: ");
 
-        List<Node> childrenSorted = getChildrenInHoleOrder();
+        List<Node> childrenSorted = getChildrenSorted();
         List<Thread> searchThreads = new ArrayList<Thread>(childrenSorted.size());
 
         for(Node child : childrenSorted){
-            searchThreads.add(new SearchThread(child));
+            searchThreads.add(new SearchThread(child, 7));
         }
 
         for(Thread t : searchThreads){
@@ -44,7 +33,6 @@ public class Node implements Comparable<Node> {
             }
             catch(InterruptedException e){
                 System.err.println(e.getMessage());
-                break;
             }
         }
 
@@ -53,10 +41,7 @@ public class Node implements Comparable<Node> {
 
         for(Node child : childrenSorted){
 
-            int score;
-            synchronized (child){
-                score = child.getScore();
-            }
+            int score = child.getScore();
 
             System.err.println("-> " + score);
 
@@ -72,25 +57,12 @@ public class Node implements Comparable<Node> {
         return bestIndex;
     }
 
-    public void refreshChildren(){
-        this.children = generateChildren();
-    }
-
-    private int getChildIndex(Node node){
-        for(Map.Entry<Integer, Node> e : children.entrySet()){
-            if(e.getValue().equals(node)){
-                return e.getKey();
-            }
-        }
-
-        return -1;
-    }
-
     public Node(Board board, Side side) {
         this.board      = board;
         this.side       = side;
         this.children   = null;
         this.evaluationFunction = board.getSeedsInStore(Side.mySide) - board.getSeedsInStore(Side.mySide.opposite());
+        this.heuristicScore = Heuristics.getScore(this);
     }
 
     public Map<Integer, Node> getChildren() {
@@ -145,28 +117,14 @@ public class Node implements Comparable<Node> {
         return new Node(childBoard, childSide);
     }
 
-    public int getScore() {
-        return score;
-    }
+    private int getChildIndex(Node node){
+        for(Map.Entry<Integer, Node> e : children.entrySet()){
+            if(e.getValue().equals(node)){
+                return e.getKey();
+            }
+        }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public void setSide(Side side) {
-        this.side = side;
-    }
-
-    public Side getSide() {
-        return side;
-    }
-
-    public Board getBoard(){
-        return board;
-    }
-
-    public int getEvaluationFunction() {
-        return evaluationFunction;
+        return -1;
     }
 
     @Override
@@ -189,14 +147,7 @@ public class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(Node node) {
-        //todo instance variable for the score instead
-        if (evaluationFunction > node.getEvaluationFunction()) {
-            return -1;
-        }
-        else {
-            return 1;
-        }
-        //return Heuristics.getScore(this) > Heuristics.getScore(node) ? -1 : 1;
+        return this.heuristicScore > node.getHeuristicScore() ? -1 : 1;
     }
 
     @Override
@@ -205,5 +156,29 @@ public class Node implements Comparable<Node> {
                 "side=" + side +
                 ", board=\n" + board +
                 '}';
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public Side getSide() {
+        return side;
+    }
+
+    public Board getBoard(){
+        return board;
+    }
+
+    public int getEvaluationFunction() {
+        return evaluationFunction;
+    }
+
+    public int getHeuristicScore() {
+        return heuristicScore;
     }
 }

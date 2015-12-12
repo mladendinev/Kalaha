@@ -8,8 +8,7 @@ public class MemoryTestDriver {
     public static int IterativeDeepening(Node node, int d){
         int firstGuess = 0;
 
-        //for(int i = 1; i < d; i+=2) {
-        for(int i = 1; i < d; i++) {
+        for(int i = 1; i < d; i+=2) {
             firstGuess = MTDf(node, firstGuess, i);
         }
 
@@ -32,8 +31,6 @@ public class MemoryTestDriver {
             }
 
             g = Minimax.alphabeta(root,  d, beta-1, beta);
-            //System.out.println("Calling alphabeta with depth" + d);
-
 
             if(g < beta){
                 upperBound = g;

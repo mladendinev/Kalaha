@@ -36,67 +36,6 @@ public class Heuristics {
         return score;
     }
 
-    public static int getScoreTemp(Node node) {
-
-        Board board = node.getBoard();
-        Side side = node.getSide();
-
-        int score = 0;
-
-        int numberOfSeedsInMyKalaha = board.getSeedsInStore(side);
-        int numberOfSeedsInHisKalaha = board.getSeedsInStore(side.opposite());
-
-
-        if ((numberOfSeedsInMyKalaha != 0 || numberOfSeedsInHisKalaha != 0) && numberOfSeedsInHisKalaha != numberOfSeedsInMyKalaha ) {
-            int winning;
-            int losing;
-            if(numberOfSeedsInMyKalaha > numberOfSeedsInHisKalaha) {
-                winning = numberOfSeedsInMyKalaha;
-                losing = numberOfSeedsInHisKalaha;
-            } else {
-                winning = numberOfSeedsInHisKalaha;
-                losing = numberOfSeedsInMyKalaha;
-            }
-
-            score = (1 / winning * (winning - losing) + 1) * winning;
-
-            // If I am losing make this a negative value
-            if(numberOfSeedsInHisKalaha > numberOfSeedsInMyKalaha) {
-                score *= -1.0D;
-            }
-        }
-
-        int captures = holeCapture(board,side);
-
-        score += captures;
-
-        int extraTurns = canGetExtraTurn(board, side);
-
-        score += extraTurns;
-
-        // Make sure we have more seeds on our side
-
-        int numberOfSeedsOnMySide = numberOfSeedsOnSide(board, side);
-        int numberOfSeedsOnHisSide = numberOfSeedsOnSide(board,side.opposite());
-
-        int scoreDifference = numberOfSeedsOnMySide - numberOfSeedsOnHisSide;
-
-        score += (scoreDifference / 2);
-
-
-        // Consider how many seeds he can steal
-        int howManyHeCanSteal = holeCapture(board, side.opposite());
-        score -= howManyHeCanSteal;
-
-        if (side != Side.mySide)
-        {
-            score *= -1.0D;
-        }
-
-
-        return score;
-    }
-
     public static int canGetExtraTurn(Board board, Side side) {
         int numberOfExtraTurns = 0;
         for (int hole = 1; hole < KALAHA_LOCATION; hole++) {

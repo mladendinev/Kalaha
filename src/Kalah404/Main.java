@@ -8,9 +8,6 @@ import java.io.Reader;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * The main application class. It also provides methods for communication
@@ -58,7 +55,7 @@ public class Main
 	//TODO remove this from production code
 	private static void redirectSystemErr(boolean first){
 		try{
-			String filePath = System.getProperty("user.dir") + "/KalahaLog" + first + ".log";
+			String filePath = System.getProperty("user.dir") + "/KalahaLog_" + first + ".log";
 			OutputStream output = new FileOutputStream(filePath);
 
 			PrintStream printOut = new PrintStream(output);
@@ -88,15 +85,15 @@ public class Main
 			while (true)
 			{
 				s = recvMsg();
-				System.err.println("Received: " + s);
+				//System.err.println("Received: " + s);
 
 				try {
 					MsgType mt = Protocol.getMessageType(s);
 					switch (mt)
 					{
-						case START: System.err.println("A start.");
+						case START: //System.err.println("A start.");
 							boolean first = Protocol.interpretStartMsg(s);
-							System.err.println("Starting player? " + first);
+							//System.err.println("Starting player? " + first);
 
 							if (first) {
 								Side.mySide = Side.SOUTH;
@@ -113,13 +110,13 @@ public class Main
 								sendMsg(Protocol.move(2));
 							}
 							break;
-						case STATE: System.err.println("A state.");
+						case STATE: //System.err.println("A state.");
 
 							Protocol.MoveTurn r = Protocol.interpretStateMsg (s, board);
-							System.err.println("This was the move: " + r.move);
-							System.err.println("Is the game over? " + r.end);
-							if (!r.end) System.err.println("Is it our turn again? " + r.again);
-							System.err.print("The board as we got it:\n" + board);
+							//System.err.println("This was the move: " + r.move);
+							//System.err.println("Is the game over? " + r.end);
+							//if (!r.end) System.err.println("Is it our turn again? " + r.again);
+							//System.err.print("The board as we got it:\n" + board);
 
 							// If we were the first player and the move was swap we need to change sides
 							// and regenerate the root
@@ -129,7 +126,7 @@ public class Main
 								root.addNewLayer();
 								int bestMove = root.getBestMove();
 								sendMsg(Protocol.move(bestMove));
-								System.err.print("His turn , swap and board:\n" + root.getBoard());
+								//System.err.print("His turn , swap and board:\n" + root.getBoard());
 							}
 
 							// If it is our turn and we can swap then we should consider swapping
@@ -141,7 +138,7 @@ public class Main
 									root = new Node(new Board(board), Side.mySide.opposite());
 
 									root.addNewLayer();
-									System.err.println("We are now on side:" + root.getSide());
+									//System.err.println("We are now on side:" + root.getSide());
 									sendMsg(Protocol.swap());
 								}
 								// If we don't swap we need to make a move
@@ -152,7 +149,7 @@ public class Main
 									int bestMove = root.getBestMove();
 									sendMsg(Protocol.move(bestMove));
 								}
-								System.err.print("We can swap:\n" + root.getBoard());
+								//System.err.print("We can swap:\n" + root.getBoard());
 							}
 
 							// If it's my turn
@@ -160,7 +157,7 @@ public class Main
 								// We need to record his move
 								root = root.getChild(r.move);
 								root.addNewLayer();
-								System.err.print("Our turn and board:\n" + root.getBoard());
+								//System.err.print("Our turn and board:\n" + root.getBoard());
 								int bestMove = root.getBestMove();
 								sendMsg(Protocol.move(bestMove));
 							}
@@ -169,13 +166,14 @@ public class Main
 							else {
 								root = root.getChild(r.move);
 								root.addNewLayer();
-								System.err.print("Board recording turn and board:\n" + root.getBoard());
+								//System.err.print("Board recording turn and board:\n" + root.getBoard());
 							}
 
 							canSwap = false;
 
 							break;
-						case END: System.err.println("An end. Bye bye!"); return;
+						case END:  return;
+							//System.err.println("An end. Bye bye!");
 					}
 				} catch (InvalidMessageException e) {
 					System.err.println(e.getMessage());
