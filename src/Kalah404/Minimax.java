@@ -21,23 +21,19 @@ public class Minimax {
         }
 
         if(e != null){
-            if (node.getBoard().hashCode() == e.zobrist) {
-                if (e.depth >= depth) {
-
-                    if (e.flag == HashEntry.Flag.LOWER) {
-                        if (e.score >= beta) {
-                            return e.score;
-                        }
-                    } else if (e.flag == HashEntry.Flag.UPPER) {
-                        if (e.score <= alpha) {
-                            return e.score;
-                        }
+            if (e.depth >= depth) {
+                if (e.flag == HashEntry.Flag.LOWER) {
+                    if (e.score >= beta) {
+                        return e.score;
                     }
-
-                    alpha = Math.max(alpha, e.score);
-                    beta = Math.min(beta, e.score);
-
+                } else if (e.flag == HashEntry.Flag.UPPER) {
+                    if (e.score <= alpha) {
+                        return e.score;
+                    }
                 }
+
+                alpha = Math.max(alpha, e.score);
+                beta = Math.min(beta, e.score);
             }
         }
 
@@ -47,10 +43,9 @@ public class Minimax {
         }
 
         if (depth == 0) {
-            //return (int)Heuristics.getScore(node);
+            //return Heuristics.getScore(node);
             return node.getEvaluationFunction();
         }
-
 
         int g;
 
@@ -81,7 +76,7 @@ public class Minimax {
         }
 
         if (e == null) {
-            e = new HashEntry(node.getBoard().hashCode(), depth, g, 10);
+            e = new HashEntry(depth, g);
 
             synchronized (transpositionalTable) {
                 transpositionalTable.put(node.getBoard(), e);

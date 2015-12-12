@@ -8,7 +8,7 @@ public class MemoryTestDriver {
     public static int IterativeDeepening(Node node, int d){
         int firstGuess = 0;
 
-        //for(int i = 1; i < d; i+=3) {+
+        //for(int i = 1; i < d; i+=2) {
         for(int i = 1; i < d; i++) {
             firstGuess = MTDf(node, firstGuess, i);
         }

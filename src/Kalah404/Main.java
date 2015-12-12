@@ -56,9 +56,9 @@ public class Main
 	}
 
 	//TODO remove this from production code
-	private static void redirectSystemErr(){
+	private static void redirectSystemErr(boolean first){
 		try{
-			String filePath = System.getProperty("user.dir") + "/KalahaLog.log";
+			String filePath = System.getProperty("user.dir") + "/KalahaLog" + first + ".log";
 			OutputStream output = new FileOutputStream(filePath);
 
 			PrintStream printOut = new PrintStream(output);
@@ -76,8 +76,6 @@ public class Main
 	 */
 	public static void main(String[] args)
 	{
-		redirectSystemErr();
-
 		try {
 			Board board = new Board(7,7);
 
@@ -112,10 +110,12 @@ public class Main
 								Side.mySide = Side.NORTH;
 							}
 
+							redirectSystemErr(first);
+
 							// If it is our turn make a move
 							if(first){
 								canSwap = false;
-								sendMsg(Protocol.move(7));
+								sendMsg(Protocol.move(2));
 							}
 							break;
 						case STATE: System.err.println("A state.");
@@ -169,6 +169,9 @@ public class Main
 								}
 								// If we don't swap we need to make a move
 								else {
+									root = root.getChild(r.move);
+									root.addNewLayer();
+
 									int bestMove = root.getBestMove();
 									sendMsg(Protocol.move(bestMove));
 								}

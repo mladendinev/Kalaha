@@ -7,13 +7,9 @@ public class HashEntry {
 
     public enum Flag { EXACT, LOWER, UPPER };
 
-
-    public int zobrist;
     public int depth;
     public Flag flag;
-    public boolean actualValue;
     public int score;
-    public int ancient;
 
 //    public HashEntry(int zobrist, int depth, boolean actualValue, int score,
 //                     int ancient){
@@ -24,11 +20,9 @@ public class HashEntry {
 //        this.ancient = ancient;
 //    }
 
-    public HashEntry(int zobrist, int depth, int score,int ancient){
-        this.zobrist = zobrist;
+    public HashEntry(int depth, int score){
         this.depth = depth;
         this.score = score;
-        this.ancient = ancient;
     }
 
 }

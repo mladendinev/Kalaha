@@ -14,7 +14,7 @@ public class Node implements Comparable<Node> {
 
     public int getBestMove(){
 
-        System.err.println("Getting best move from: ");
+        //System.err.println("Getting best move from: ");
 
         List<Node> childrenSorted = getChildrenSorted();
         List<Thread> searchThreads = new ArrayList<Thread>(childrenSorted.size());
@@ -55,7 +55,7 @@ public class Node implements Comparable<Node> {
             }
         }
 
-        System.err.println("best value is MOVE;" + bestIndex + " with value: " + bestValue);
+        //System.err.println("best value is MOVE;" + bestIndex + " with value: " + bestValue);
 
 
         return bestIndex;
