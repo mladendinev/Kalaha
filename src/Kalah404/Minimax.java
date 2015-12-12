@@ -10,24 +10,14 @@ import java.util.Map;
  */
 public class Minimax {
 
-    static class TableEntry {
-        public int lowerBound = Integer.MIN_VALUE;
-        public int upperBound = Integer.MAX_VALUE;
-
-        public TableEntry(){}
-    }
-
     public static final Map<Board, HashEntry> transpositionalTable = new HashMap<Board, HashEntry>();
 
 
     public static int alphabeta(Node node, int depth, int alpha, int beta) {
-        System.err.println("Performing at depth" + depth);
-        System.err.println("NODE at depth" + depth);
-
 
         HashEntry e;
         synchronized (transpositionalTable) {
-            e = transpositionalTable.get(node);
+            e = transpositionalTable.get(node.getBoard());
         }
 
         if(e != null){
@@ -91,7 +81,6 @@ public class Minimax {
         }
 
         if (e == null) {
-
             e = new HashEntry(node.getBoard().hashCode(), depth, g, 10);
 
             synchronized (transpositionalTable) {
