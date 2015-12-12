@@ -10,13 +10,24 @@ public class Node implements Comparable<Node> {
     public Map<Integer, Node> children;
     private int evaluationFunction = 0;
 
-    private int score = 0;
+    private int score = Integer.MIN_VALUE;
+
+    public List<Node> getChildrenInHoleOrder(){
+        TreeMap<Integer, Node> treeMap = new TreeMap<Integer, Node>(Collections.reverseOrder());
+
+        treeMap.putAll(children);
+
+        List<Node> childrenInOrder = new ArrayList<Node>();
+        childrenInOrder.addAll(treeMap.values());
+
+        return childrenInOrder;
+    }
 
     public int getBestMove(){
 
         //System.err.println("Getting best move from: ");
 
-        List<Node> childrenSorted = getChildrenSorted();
+        List<Node> childrenSorted = getChildrenInHoleOrder();
         List<Thread> searchThreads = new ArrayList<Thread>(childrenSorted.size());
 
         for(Node child : childrenSorted){
@@ -55,7 +66,7 @@ public class Node implements Comparable<Node> {
             }
         }
 
-        //System.err.println("best value is MOVE;" + bestIndex + " with value: " + bestValue);
+        System.err.println("best value is MOVE;" + bestIndex + " with value: " + bestValue);
 
 
         return bestIndex;
