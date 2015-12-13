@@ -246,6 +246,22 @@ public class Board extends Observable implements Cloneable
     	this.setChanged();
     }
 
+	public int currentNumberOfSeeds(Side side){
+		int currentSeedNumb = 0;
+		if (side == Side.SOUTH){
+			for (int i=1; i<=holes;i++){
+				currentSeedNumb += board[SOUTH_ROW][i];
+			}
+		}
+		if (side== Side.NORTH){
+			for (int i=1; i<=holes;i++){
+				currentSeedNumb += board[NORTH_ROW][i];
+			}
+		}
+
+		return currentSeedNumb;
+	}
+
     /**
      * Get the number of seeds in a store.
      * @param side The side the store is located on.

@@ -25,6 +25,15 @@ public class Heuristics {
         return average;
     }
 
+    public static int seedsInPlay(Node node){
+        Board board = node.getBoard();
+        Side side = node.getSide();
+
+        return ((board.getSeedsInStore(Side.mySide) + board.currentNumberOfSeeds(Side.mySide)
+                - board.getSeedsInStore(Side.mySide.opposite()) + board.currentNumberOfSeeds(Side.mySide.opposite())));
+
+    }
+
     public static int monteCarlo(Node node){
 
         Board board = new Board(node.getBoard());
