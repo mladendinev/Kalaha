@@ -145,7 +145,7 @@ public class Heuristics {
                 return true;
             }
         }
-            return false;
+        return false;
     }
 
     private static int numberOfSeedsOnSide(Board board, Side side) {
