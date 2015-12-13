@@ -10,6 +10,16 @@ public class Heuristics {
 
     private static final int KALAHA_LOCATION = 8;
 
+
+    public static int seedsInPlay(Node node){
+        Board board = node.getBoard();
+        Side side = node.getSide();
+
+        return ((board.getSeedsInStore(Side.mySide) + board.currentNumberOfSeeds(Side.mySide)
+                - board.getSeedsInStore(Side.mySide.opposite()) + board.currentNumberOfSeeds(Side.mySide.opposite())));
+
+    }
+
     public static int getScore(Node node) {
 
         Board board = node.getBoard();
@@ -67,7 +77,7 @@ public class Heuristics {
                 return true;
             }
         }
-            return false;
+        return false;
     }
 
     private static int numberOfSeedsOnSide(Board board, Side side) {
