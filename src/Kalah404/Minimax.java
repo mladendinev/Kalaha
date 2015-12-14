@@ -51,7 +51,7 @@ public class Minimax {
             for (Node child : node.getChildrenSorted()) {
                 g = Math.max(g, alphabeta(child, depth - 1, a, beta));
                 a = Math.max(a, g);
-                if (g >= beta) {
+                    if (a >= beta) {
                     break;
                 }
             }
@@ -63,7 +63,7 @@ public class Minimax {
             for (Node child : children) {
                 g = Math.min(g, alphabeta(child, depth - 1, alpha, b));
                 b = Math.min(b, g);
-                if (g <= alpha) {
+                if (b <= alpha) {
                     break;
                 }
             }
