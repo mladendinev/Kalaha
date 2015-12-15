@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Minimax {
 
-    public static final Map<Board, HashEntry> transpositionalTable = new ConcurrentHashMap<>(60000);
+    public static final Map<Board, HashEntry> transpositionalTable = new ConcurrentHashMap<Board, HashEntry>(60000);
 
     public static int alphabeta(Node node, int depth, int alpha, int beta) {
 

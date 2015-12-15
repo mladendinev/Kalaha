@@ -20,7 +20,7 @@ public class Node implements Comparable<Node> {
         List<Thread> searchThreads = new ArrayList<Thread>(childrenSorted.size());
 
         for(Node child : childrenSorted){
-            searchThreads.add(new SearchThread(child, 7));
+            searchThreads.add(new SearchThread(child, 8));
         }
 
         for(Thread t : searchThreads){
