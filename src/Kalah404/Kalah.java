@@ -230,7 +230,6 @@ public class Kalah
     public static boolean gameOver (Board board)
     {
     	// The game is over if one of the agents can't make another move.
-
     	return holesEmpty(board, Side.NORTH) || holesEmpty(board, Side.SOUTH);
     }
 }

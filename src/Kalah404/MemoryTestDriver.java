@@ -6,10 +6,11 @@ package Kalah404;
 public class MemoryTestDriver {
 
     public static int IterativeDeepening(Node node, int d){
-        int firstGuess = node.getEvaluationFunction();
+        int firstGuess = 0;
 
-        //for(int i = 1; i < d; i+=3) {+
-        for(int i = 1; i < d; i++) {
+        /* Iterative Deepening in steps of 2 has shown to be
+           very fast and still accurate. */
+        for(int i = 1; i < d; i+=2) {
             firstGuess = MTDf(node, firstGuess, i);
         }
 

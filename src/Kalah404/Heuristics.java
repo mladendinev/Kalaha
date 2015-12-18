@@ -1,48 +1,14 @@
 package Kalah404;
 
-import java.util.List;
-import java.util.Random;
-
 /**
  * Created by gmtuca on 04/12/15.
  */
 public class Heuristics {
 
-    static Random random = new Random();
+    private static final int KALAH_LOCATION = 8;
 
-    private static final int KALAHA_LOCATION = 8;
-
-    public static int monteCarlo(Node node, int timesRun){
-
-        int average = 0;
-
-        for(int i = 0; i < timesRun; i++){
-            average += monteCarlo(node);
-        }
-
-        average /= timesRun;
-
-        return average;
-    }
-
-    public static int monteCarlo(Node node){
-
-        Board board = new Board(node.getBoard());
-        Side side = node.getSide();
-
-        while(!Kalah.gameOver(board)){
-
-            List<Integer> validHoles = board.getValidHoles(side);
-
-            int randomHole = validHoles.get(random.nextInt(validHoles.size()));
-
-            Move move = new Move(side, randomHole);
-
-            side = Kalah.makeMove(board, move);
-        }
-
-        return board.getSeedsInStore(Side.mySide) - board.getSeedsInStore(Side.mySide.opposite()); //todo have this outside
-    }
+    private static final double EXTRA_TURN_WEIGHT  = 4.0;
+    private static final double CAPTURE_WEIGHT     = 0.5;
 
     public static int getScore(Node node) {
 
@@ -51,78 +17,38 @@ public class Heuristics {
 
         int score = 0;
 
-        int numberOfSeedsInMyKalaha = board.getSeedsInStore(side);
-        int numberOfSeedsInHisKalaha = board.getSeedsInStore(side.opposite());
+        score += holeCapture(board,side) * CAPTURE_WEIGHT;
 
-
-        if ( (numberOfSeedsInMyKalaha != 0 || numberOfSeedsInHisKalaha != 0) && numberOfSeedsInHisKalaha != numberOfSeedsInMyKalaha ) {
-            int winning;
-            int losing;
-            if(numberOfSeedsInMyKalaha > numberOfSeedsInHisKalaha) {
-                winning = numberOfSeedsInMyKalaha;
-                losing = numberOfSeedsInHisKalaha;
-            } else {
-                winning = numberOfSeedsInHisKalaha;
-                losing = numberOfSeedsInMyKalaha;
-            }
-
-            score = (1 / winning * (winning - losing) + 1) * winning;
-
-            // If I am losing make this a negative value
-            if(numberOfSeedsInHisKalaha > numberOfSeedsInMyKalaha) {
-                score *= -1.0D;
-            }
+        if(canGetExtraTurn(board, side)){
+            score += EXTRA_TURN_WEIGHT;
         }
 
-        int captures = holeCapture(board,side);
-
-        score += captures;
-
-        int extraTurns = canGetExtraTurn(board, side);
-
-        score += extraTurns;
-
-        // Make sure we have more seeds on our side
-
-        int numberOfSeedsOnMySide = numberOfSeedsOnSide(board, side);
-        int numberOfSeedsOnHisSide = numberOfSeedsOnSide(board,side.opposite());
-
-        int scoreDifference = numberOfSeedsOnMySide - numberOfSeedsOnHisSide;
-
-        score += (scoreDifference / 2);
-
-
-        // Consider how many seeds he can steal
-        int howManyHeCanSteal = holeCapture(board, side.opposite());
-        score -= howManyHeCanSteal;
-
-        if (side != Side.mySide)
-        {
+        if (side != Side.mySide) {
             score *= -1.0D;
         }
 
+        score += node.getEvaluationFunction();
 
         return score;
     }
 
-    public static int canGetExtraTurn(Board board, Side side) {
-        int numberOfExtraTurns = 0;
-        for (int hole = 1; hole < KALAHA_LOCATION; hole++) {
-            if (board.getSeeds(side, hole) == (KALAHA_LOCATION - hole)) {
-                numberOfExtraTurns++;
+    public static boolean canGetExtraTurn(Board board, Side side) {
+        for (int hole = 1; hole < KALAH_LOCATION; hole++) {
+            if (board.getSeeds(side, hole) == (KALAH_LOCATION - hole)) {
+                return true;
             }
         }
-        return numberOfExtraTurns;
+        return false;
     }
 
-
     public static int holeCapture(Board board, Side side) {
+        //The sum of all stones which can be captured at this point
 
         int capturesPossible = 0;
-        for (int index = 1; index < KALAHA_LOCATION; index++) {
+        for (int i = 1; i < KALAH_LOCATION; i++) {
             // Check to see if there are any holes which have 0 seeds in them
-            if (board.getSeeds(side, index) == 0 && canPutLastSeedHere(board, side, index)) {
-                capturesPossible += (board.getSeedsOp(side, index) / 2);
+            if (board.getSeeds(side, i) == 0 && canPutLastSeedHere(board, side, i)) {
+                capturesPossible += board.getSeedsOp(side, i) + 1;
             }
         }
 
@@ -136,15 +62,7 @@ public class Heuristics {
                 return true;
             }
         }
-            return false;
-    }
-
-    private static int numberOfSeedsOnSide(Board board, Side side) {
-        int numberOfSeeds  = 0;
-        for(int index = 1; index <= board.getNoOfHoles(); ++index) {
-            numberOfSeeds += board.getSeeds(side, index);
-        }
-        return numberOfSeeds;
+        return false;
     }
 
 }
