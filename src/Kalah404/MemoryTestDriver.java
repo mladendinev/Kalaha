@@ -8,6 +8,8 @@ public class MemoryTestDriver {
     public static int IterativeDeepening(Node node, int d){
         int firstGuess = 0;
 
+        /* Iterative Deepening in steps of 2 has shown to be
+           very fast and still accurate. */
         for(int i = 1; i < d; i+=2) {
             firstGuess = MTDf(node, firstGuess, i);
         }

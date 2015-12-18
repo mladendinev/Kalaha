@@ -7,27 +7,37 @@ public class Node implements Comparable<Node> {
 
     private final Board board;
     private Side side;
+
     public Map<Integer, Node> children;
+
     private int evaluationFunction = 0;
     private int score = Integer.MIN_VALUE;
     private int heuristicScore;
 
+    // Depth that Iterative Deepening will look down on each child
+    // We keep it 7 to allow it to be very quick! (can be increased for more accuracy)
+    private static final int MAXIMUM_DEPTH = 7;
+
     public int getBestMove(){
 
-        System.err.println("Getting best move from: ");
-
+        //Sort children
         List<Node> childrenSorted = getChildrenSorted();
-        List<Thread> searchThreads = new ArrayList<Thread>(childrenSorted.size());
+
+        /* Create list of threads which will look down all children of this node.
+           Each child will return a value representing the score of that child
+           according to their Iterative Deepening value */
+
+        List<Thread> scoreThreads = new ArrayList<Thread>(childrenSorted.size());
 
         for(Node child : childrenSorted){
-            searchThreads.add(new SearchThread(child, 8));
+            scoreThreads.add(new ScoreTrackingThread(child, MAXIMUM_DEPTH));
         }
 
-        for(Thread t : searchThreads){
+        for(Thread t : scoreThreads){
             t.start();
         }
 
-        for(Thread t : searchThreads){
+        for(Thread t : scoreThreads){
             try {
                 t.join();
             }
@@ -43,26 +53,21 @@ public class Node implements Comparable<Node> {
 
             int score = child.getScore();
 
-            System.err.println("-> " + score);
-
             if(score > bestValue){
                 bestValue = score;
                 bestIndex = getChildIndex(child);
             }
         }
 
-        System.err.println("best value is MOVE;" + bestIndex + " with value: " + bestValue);
-
-
         return bestIndex;
     }
 
     public Node(Board board, Side side) {
-        this.board      = board;
-        this.side       = side;
-        this.children   = null;
+        this.board              = board;
+        this.side               = side;
+        this.children           = null;
         this.evaluationFunction = board.getSeedsInStore(Side.mySide) - board.getSeedsInStore(Side.mySide.opposite());
-        this.heuristicScore = Heuristics.getScore(this);
+        this.heuristicScore     = Heuristics.getScore(this);
     }
 
     public Map<Integer, Node> getChildren() {
@@ -88,7 +93,11 @@ public class Node implements Comparable<Node> {
     }
 
     public List<Node> getChildrenList(){
-        return new ArrayList<Node>(getChildren().values());
+        List<Node> childrenList = new ArrayList<Node>(getChildren().values());
+        Collections.reverse(childrenList);
+        /* this is a fix for a problem we had with the HashMap values() call
+           which returned differently ordered values for Java6 vs Java7 */
+        return childrenList;
     }
 
     public List<Node> getChildrenSorted(){

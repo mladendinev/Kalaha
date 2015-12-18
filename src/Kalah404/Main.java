@@ -48,14 +48,15 @@ public class Main
 			message.append((char)newCharacter);
 		} while((char)newCharacter != '\n');
 
-		//System.err.println("RECEIVED AT: " + System.currentTimeMillis());
 		return message.toString();
 	}
 
-	//TODO remove this from production code
 	private static void redirectSystemErr(boolean first){
 		try{
-			String filePath = System.getProperty("user.dir") + "/KalahaLog_" + first + ".log";
+			String filePath = 	System.getProperty("user.dir") +
+								"/KalahLog_" + first + "_" +
+								System.getProperty("java.version") + ".log";
+
 			OutputStream output = new FileOutputStream(filePath);
 
 			PrintStream printOut = new PrintStream(output);
@@ -64,6 +65,10 @@ public class Main
 		catch(Exception e){
 			System.err.println("Exception " + e.getMessage());
 		}
+	}
+
+	private static void makeBestMove(Node node){
+		sendMsg(Protocol.move(node.getBestMove()));
 	}
 
 	/**
@@ -85,7 +90,6 @@ public class Main
 			while (true)
 			{
 				s = recvMsg();
-				//System.err.println("Received: " + s);
 
 				try {
 					MsgType mt = Protocol.getMessageType(s);
@@ -93,63 +97,45 @@ public class Main
 					{
 						case START: //System.err.println("A start.");
 							boolean first = Protocol.interpretStartMsg(s);
-							//System.err.println("Starting player? " + first);
 
-							if (first) {
-								Side.mySide = Side.SOUTH;
-							}
-							else {
-								Side.mySide = Side.NORTH;
-							}
+							Side.mySide = first ? Side.SOUTH : Side.NORTH;
 
-							redirectSystemErr(first);
-
-							// If it is our turn make a move
+							// If I am the starting player
 							if(first){
 								canSwap = false;
-								sendMsg(Protocol.move(2));
+								sendMsg(Protocol.move(2)); //Our opening move is 2
 							}
 							break;
-						case STATE: //System.err.println("A state.");
-
+						case STATE:
 							Protocol.MoveTurn r = Protocol.interpretStateMsg (s, board);
-							//System.err.println("This was the move: " + r.move);
-							//System.err.println("Is the game over? " + r.end);
-							//if (!r.end) System.err.println("Is it our turn again? " + r.again);
-							//System.err.print("The board as we got it:\n" + board);
 
-							// If we were the first player and the move was swap we need to change sides
-							// and regenerate the root
+							// If I am the starting player and the opponent swapped
+							// I need to change sides and regenerate the root
 							if (r.again && r.move == Protocol.SWAP) {
 								Side.mySide = Side.mySide.opposite();
 								root = new Node(new Board(board), Side.mySide);
 								root.addNewLayer();
-								int bestMove = root.getBestMove();
-								sendMsg(Protocol.move(bestMove));
-								//System.err.print("His turn , swap and board:\n" + root.getBoard());
-							}
 
-							// If it is our turn and we can swap then we should consider swapping
+								makeBestMove(root);
+							}
+							// If it is my turn and I can swap, then I should consider swapping
 							else if (r.again && canSwap) {
 								// If we swap change the sides and continue
 								if (r.move <= 2) {
 									Side.mySide = Side.mySide.opposite();
 									// Now it's his move
 									root = new Node(new Board(board), Side.mySide.opposite());
-
 									root.addNewLayer();
-									//System.err.println("We are now on side:" + root.getSide());
+
 									sendMsg(Protocol.swap());
 								}
-								// If we don't swap we need to make a move
+								// If I don't swap, I need to make a move
 								else {
 									root = root.getChild(r.move);
 									root.addNewLayer();
 
-									int bestMove = root.getBestMove();
-									sendMsg(Protocol.move(bestMove));
+									makeBestMove(root);
 								}
-								//System.err.print("We can swap:\n" + root.getBoard());
 							}
 
 							// If it's my turn
@@ -157,23 +143,21 @@ public class Main
 								// We need to record his move
 								root = root.getChild(r.move);
 								root.addNewLayer();
-								//System.err.print("Our turn and board:\n" + root.getBoard());
-								int bestMove = root.getBestMove();
-								sendMsg(Protocol.move(bestMove));
+
+								makeBestMove(root);
 							}
 
-							// It was his turn after we made ours
+							// The opponent made a move
 							else {
 								root = root.getChild(r.move);
 								root.addNewLayer();
-								//System.err.print("Board recording turn and board:\n" + root.getBoard());
 							}
 
 							canSwap = false;
 
 							break;
-						case END:  return;
-							//System.err.println("An end. Bye bye!");
+						case END:
+							return;
 					}
 				} catch (InvalidMessageException e) {
 					System.err.println(e.getMessage());
