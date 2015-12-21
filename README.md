@@ -1,10 +1,4 @@
-# Kalaha
+# Kalah404 - AI and Games Group Project
 
-
-#AI and Games Group Project
-
-========================================================================
-
-To compile the AI Agent run this command:
-
-javac MKAgent/*.java && jar cvfe MKAgent.jar MKAgent.MKAgent.Main MKAgent/*.class
+<p>This project contains source code which produces the Kalah(7,7) player named Kalah404.jar</p>
+<p>To compete players against each other, use the following command <code>./run Player1.jar Player2.jar</code></p>
